@@ -88,7 +88,7 @@ const Header = async () => {
               </SignedIn>
               {user ? (
                 <div className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect">
-                  <div className="hidden lg:block">
+                  <div className="hidden lg:block capitalize">
                     <UserButton showName />
                   </div>
                   <div className="lg:hidden">
