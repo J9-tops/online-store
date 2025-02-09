@@ -23,6 +23,8 @@ export default clerkMiddleware(async (auth, req) => {
       return NextResponse.redirect(url);
     }
   }
+
+  console.log("ran successfully");
 });
 
 export const config = {

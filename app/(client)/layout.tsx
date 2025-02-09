@@ -3,6 +3,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
 export const metadata: Metadata = {
   title: "Online Store",
   description: "A sample online store made by j9-tops",
