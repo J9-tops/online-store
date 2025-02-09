@@ -19,3 +19,9 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@layer base {
+  .hoverEffect {
+    @apply duration-300 ease-in-out transition-all cursor-pointer;
+  }
+}
