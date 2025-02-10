@@ -13,11 +13,11 @@ export default function VendorLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col lg:flex-row">
+    <div className="flex flex-col lg:flex-row lg:max-h-screen lg:overflow-y-hidden">
       <Sidebar />
       <div className="lg:flex w-full">
         <DataBar />
-        <div>{children}</div>
+        {children}
       </div>
     </div>
   );

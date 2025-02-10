@@ -1,14 +1,10 @@
-import React from "react";
+"use client";
+
+import { GenericForm } from "@/components/FormWrapper";
+import { saleConfig } from "@/types/config";
 
 const Page = () => {
-  return (
-    <div>
-      <header>
-        <p>Sale</p>
-        <h1>New Sale</h1>
-      </header>
-    </div>
-  );
+  return <GenericForm {...saleConfig} />;
 };
 
 export default Page;

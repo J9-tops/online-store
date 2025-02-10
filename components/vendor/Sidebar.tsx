@@ -7,7 +7,7 @@ import { HiOutlineShoppingBag } from "react-icons/hi2";
 
 const Sidebar = () => {
   return (
-    <aside className="flex lg:flex-col lg:w-[25%] lg:border-r lg:border-solid lg:border-black gap-2 lg:gap-0 lg:min-h-screen">
+    <aside className="flex lg:flex-col lg:w-[25%] lg:border-r lg:border-solid lg:border-black gap-2 lg:gap-0 lg:max-h-screen">
       <Link
         href={"/vendor/category"}
         className="flex lg:justify-start lg:items-center text-sm gap-2 border border-black border-solid lg:border-b lg:border-gray-200 p-2 rounded-md flex-1 justify-center lg:flex-initial"
