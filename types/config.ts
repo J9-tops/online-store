@@ -37,5 +37,11 @@ export const saleConfig = {
     { name: "validFrom", label: "Valid From", type: "date" as const },
     { name: "validUntil", label: "Valid Until", type: "date" as const },
     { name: "isActive", label: "Is Active", type: "checkbox" as const },
+    {
+      name: "productImage",
+      label: "Product Image",
+      placeholder: "Drag or paste image here",
+      type: "file" as const,
+    },
   ],
 };

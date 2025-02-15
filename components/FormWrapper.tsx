@@ -11,24 +11,26 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { DefaultValues, Path, useForm } from "react-hook-form";
-import { ZodSchema } from "zod";
-import { SlCalender } from "react-icons/sl";
-import { format } from "date-fns";
-import { FieldValues } from "react-hook-form";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import useFileUpload from "@/hooks/useFileUpload";
 import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
+import Image from "next/image";
+import { useState } from "react";
+import { DefaultValues, FieldValues, Path, useForm } from "react-hook-form";
+import { SlCalender } from "react-icons/sl";
+import { ZodSchema } from "zod";
+import Container from "./Container";
+import ProgressBar from "./ProgressBar";
 import { Calendar } from "./ui/calendar";
 import { Checkbox } from "./ui/checkbox";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Textarea } from "./ui/textarea";
-import Container from "./Container";
-import { useState } from "react";
 
 interface FieldConfig {
   name: string;
   label: string;
-  type: "text" | "number" | "date" | "checkbox" | "textarea";
+  type: "text" | "number" | "date" | "checkbox" | "textarea" | "file";
   placeholder?: string;
   description?: string;
 }
@@ -49,6 +51,9 @@ export function GenericForm<T extends FieldValues>({
     resolver: zodResolver(schema),
     defaultValues: defaultValues as DefaultValues<T>,
   });
+
+  const { handleFileUpload, progress, fileRef, status, imageURL } =
+    useFileUpload();
 
   const [title, setTitle] = useState(defaultValues.title || "New sale");
 
@@ -122,6 +127,32 @@ export function GenericForm<T extends FieldValues>({
                         />
                       </PopoverContent>
                     </Popover>
+                  ) : field.type === "file" ? (
+                    <>
+                      <FormControl>
+                        <Input
+                          {...controllerField}
+                          type={field.type}
+                          ref={fileRef}
+                          accept="image/*"
+                          onChange={handleFileUpload}
+                          placeholder={field.placeholder}
+                          className="cursor-pointer"
+                        />
+                      </FormControl>
+                      {status === "uploading" && (
+                        <ProgressBar prev={0} current={progress} />
+                      )}
+                      {progress === 100 && imageURL !== "" && (
+                        <Image
+                          src={imageURL}
+                          alt="uploaded image"
+                          width={500}
+                          height={200}
+                          className="aspect-square w-full "
+                        />
+                      )}
+                    </>
                   ) : field.type === "textarea" ? (
                     <FormControl>
                       <Textarea {...controllerField} />

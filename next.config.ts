@@ -5,6 +5,14 @@ const nextConfig: NextConfig = {
   experimental: {
     middlewarePrefetch: "strict",
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "res.cloudinary.com",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
