@@ -1,14 +1,16 @@
-import { SaleSchema } from "./schema";
+import { categorySchema, SaleSchema } from "./schema";
 
 const date = new Date();
 
 export const saleConfig = {
+  name: "Sale",
   schema: SaleSchema,
   defaultValues: {
     badge: "",
     couponCode: "",
     description: "",
     discountAmount: "",
+    discountBadge: "",
     isActive: true,
     title: "",
     validFrom: date,
@@ -43,5 +45,20 @@ export const saleConfig = {
       placeholder: "Drag or paste image here",
       type: "file" as const,
     },
+  ],
+};
+
+export const categoryConfig = {
+  name: "Category",
+  schema: categorySchema,
+  defaultValues: {
+    title: "",
+    slug: "",
+    description: "",
+  },
+  fields: [
+    { name: "title", label: "Title", type: "text" as const },
+    { name: "slug", label: "Slug", type: "text" as const },
+    { name: "description", label: "Description", type: "textarea" as const },
   ],
 };

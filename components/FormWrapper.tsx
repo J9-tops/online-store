@@ -36,6 +36,7 @@ interface FieldConfig {
 }
 
 interface GenericFormProps<T extends FieldValues> {
+  name: string;
   schema: ZodSchema<T>;
   defaultValues: T;
   apiEndpoint?: string;
@@ -43,6 +44,7 @@ interface GenericFormProps<T extends FieldValues> {
 }
 
 export function GenericForm<T extends FieldValues>({
+  name,
   schema,
   defaultValues,
   fields,
@@ -55,7 +57,7 @@ export function GenericForm<T extends FieldValues>({
   const { handleFileUpload, progress, fileRef, status, imageURL } =
     useFileUpload();
 
-  const [title, setTitle] = useState(defaultValues.title || "New sale");
+  const [title, setTitle] = useState(defaultValues.title);
 
   const onSubmit: (values: T) => Promise<void> = async (values: T) => {
     console.log("Form Submitted:", values);
@@ -65,9 +67,9 @@ export function GenericForm<T extends FieldValues>({
   return (
     <Container className="w-full overflow-y-auto h-screen flex flex-col items-center pb-8 pt-4">
       <div className="self-start pl-16">
-        <p>Sale</p>
+        <p>{`${name}`}</p>
         <h1 className="text-4xl font-bold">
-          {title === "" ? "New Sale" : title}
+          {title === "" ? `New ${name}` : title}
         </h1>
       </div>
       <Form {...form}>

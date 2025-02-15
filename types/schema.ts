@@ -10,3 +10,9 @@ export const SaleSchema = z.object({
   validUntil: z.date().optional(),
   isActive: z.boolean().default(true).optional(),
 });
+
+export const categorySchema = z.object({
+  title: z.string(),
+  slug: z.string(),
+  description: z.string(),
+});
