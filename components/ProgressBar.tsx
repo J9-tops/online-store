@@ -10,13 +10,13 @@ const ProgressBar = ({ prev, current }: Props) => {
   const [width, setWidth] = useState<number>(prev);
 
   useEffect(() => {
-    const timeout = setTimeout(() => setWidth(current), 100);
-    return () => clearTimeout(timeout);
+    setTimeout(() => setWidth(current), 50);
   }, [current]);
+
   return (
-    <span className="bg-bgGreen h-1 w-full overflow-hidden">
+    <span className="bg-red-500 h-2 w-full overflow-hidden">
       <span
-        className="bg-subGreen block h-full transition-all duration-500"
+        className="bg-blue-500 block h-full transition-all duration-500"
         style={{ width: `${width}%` }}
       ></span>
     </span>

@@ -11,14 +11,25 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import useFileUpload from "@/hooks/useFileUpload";
+import useToast from "@/hooks/useToast";
 import { cn } from "@/lib/utils";
+import { CategoryType } from "@/types/vendor";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { format } from "date-fns";
 import Image from "next/image";
-import { useState } from "react";
-import { DefaultValues, FieldValues, Path, useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import {
+  DefaultValues,
+  FieldValues,
+  Path,
+  PathValue,
+  useForm,
+} from "react-hook-form";
 import { SlCalender } from "react-icons/sl";
+import { ToastContainer } from "react-toastify";
 import { ZodSchema } from "zod";
 import Container from "./Container";
 import ProgressBar from "./ProgressBar";
@@ -26,6 +37,8 @@ import { Calendar } from "./ui/calendar";
 import { Checkbox } from "./ui/checkbox";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Textarea } from "./ui/textarea";
+
+const statusOptions = ["Hot", "New", "Sale"];
 
 interface FieldConfig {
   name: string;
@@ -54,15 +67,58 @@ export function GenericForm<T extends FieldValues>({
     defaultValues: defaultValues as DefaultValues<T>,
   });
 
-  const { handleFileUpload, progress, fileRef, status, imageURL } =
+  const [categoriesList, setCategoryList] = useState<CategoryType[]>([]);
+
+  const { handleFileUpload, progress, fileRef, status, imageURL, setStatus } =
     useFileUpload();
 
   const [title, setTitle] = useState(defaultValues.title);
+  const { notifySuccess, notifyError } = useToast();
 
-  const onSubmit: (values: T) => Promise<void> = async (values: T) => {
-    console.log("Form Submitted:", values);
-    alert("Form submitted successfully!");
+  const onSubmit = async (values: T) => {
+    try {
+      const response = await axios.post(
+        `/api/vendor/${name.toLowerCase()}`,
+        values,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.data?.success) {
+        notifySuccess(response.data?.message);
+      } else {
+        notifyError(response.data?.message);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        notifyError(`${error.message}`);
+      } else {
+        notifyError("An unexpected error occurred.");
+      }
+    }
+    console.log("form submitted:", values);
   };
+
+  useEffect(() => {
+    if (imageURL) {
+      form.setValue("imgUrl" as Path<T>, imageURL as PathValue<T, Path<T>>);
+    }
+  }, [imageURL, form]);
+
+  useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const res = await axios.get(`/api/vendor/category`);
+        setCategoryList(res.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    getCategories();
+  }, []);
 
   return (
     <Container className="w-full overflow-y-auto h-screen flex flex-col items-center pb-8 pt-4">
@@ -85,7 +141,61 @@ export function GenericForm<T extends FieldValues>({
               render={({ field: controllerField }) => (
                 <FormItem className="flex flex-col">
                   <FormLabel>{field.label}</FormLabel>
-                  {field.type === "text" || field.type === "number" ? (
+
+                  {field.name === "categories" ? (
+                    // Multiple selections for categories
+                    <FormControl>
+                      <div className="flex flex-wrap gap-2 w-full">
+                        {categoriesList.map((category) => (
+                          <div
+                            key={category.id}
+                            className="flex items-center space-x-2 "
+                          >
+                            <Checkbox
+                              checked={
+                                controllerField.value?.some(
+                                  (cat: CategoryType) => cat.id === category.id
+                                ) || false
+                              }
+                              onCheckedChange={(checked) => {
+                                const newCategories = checked
+                                  ? [...(controllerField.value ?? []), category] // Add the full category object
+                                  : (controllerField.value ?? []).filter(
+                                      (cat: CategoryType) =>
+                                        cat.id !== category.id
+                                    ); // Remove the category object
+
+                                controllerField.onChange(newCategories);
+                              }}
+                            />
+
+                            <span>{category.title}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </FormControl>
+                  ) : field.name === "status" ? (
+                    // Single selection for status
+                    <FormControl>
+                      <RadioGroup
+                        value={controllerField.value}
+                        onValueChange={controllerField.onChange}
+                        className="flex flex-col gap-2"
+                      >
+                        {statusOptions.map((status) => (
+                          <div
+                            key={status}
+                            className="flex items-center space-x-2"
+                          >
+                            <RadioGroupItem value={status} id={status} />
+                            <label htmlFor={status} className="text-sm">
+                              {status}
+                            </label>
+                          </div>
+                        ))}
+                      </RadioGroup>
+                    </FormControl>
+                  ) : field.type === "text" || field.type === "number" ? (
                     <FormControl>
                       <Input
                         {...controllerField}
@@ -151,24 +261,19 @@ export function GenericForm<T extends FieldValues>({
                           alt="uploaded image"
                           width={500}
                           height={200}
-                          className="aspect-square w-full "
+                          onLoad={() => setStatus("idle")}
+                          className="aspect-square w-full"
                         />
                       )}
                     </>
-                  ) : field.type === "textarea" ? (
+                  ) : (
                     <FormControl>
                       <Textarea {...controllerField} />
                     </FormControl>
-                  ) : (
-                    <FormControl>
-                      <Checkbox
-                        checked={controllerField.value}
-                        onCheckedChange={controllerField.onChange}
-                      />
-                    </FormControl>
                   )}
+
                   {field.description && (
-                    <FormDescription>{field.description} </FormDescription>
+                    <FormDescription>{field.description}</FormDescription>
                   )}
                   <FormMessage />
                 </FormItem>
@@ -180,6 +285,7 @@ export function GenericForm<T extends FieldValues>({
           </Button>
         </form>
       </Form>
+      <ToastContainer />
     </Container>
   );
 }

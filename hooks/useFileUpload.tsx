@@ -14,6 +14,7 @@ const useFileUpload = () => {
       const selectedFile = e.target.files[0];
 
       setProgress(0);
+      setStatus("uploading");
 
       const formData = new FormData();
       formData.append("file", selectedFile);
@@ -43,18 +44,11 @@ const useFileUpload = () => {
           }
         );
 
-        setStatus("idle");
         setImageURL(response.data?.url);
         setProgress(100);
-
-        setTimeout(() => {
-          setStatus("idle");
-        }, 500);
       } catch (error) {
         console.error("Upload error:", error);
       }
-    } else {
-      setStatus("idle");
     }
   };
 
@@ -83,6 +77,7 @@ const useFileUpload = () => {
     handleDragOver,
     handleDrop,
     imageURL,
+    setStatus,
   };
 };
 

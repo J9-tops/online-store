@@ -1,21 +1,21 @@
-import React from "react";
-import Link from "next/link";
-import Image from "next/image";
 import logo from "@/images/logo.png";
-import Form from "next/form";
-import CartIcon from "./CartIcon";
 import { ClerkLoaded, SignedIn, SignInButton, UserButton } from "@clerk/nextjs";
-import { BsBasket } from "react-icons/bs";
 import { currentUser } from "@clerk/nextjs/server";
+import Form from "next/form";
+import Image from "next/image";
+import Link from "next/link";
+import { BsBasket } from "react-icons/bs";
 import { FiUser } from "react-icons/fi";
-import ToggleMenu from "./ToggleMenu";
-import { RiAdminLine } from "react-icons/ri";
 import { HiOutlineDatabase } from "react-icons/hi";
+import { RiAdminLine } from "react-icons/ri";
+import CartIcon from "./CartIcon";
+import ToggleMenu from "./ToggleMenu";
 
 const Header = async () => {
   const user = await currentUser();
   const isAdmin = user?.publicMetadata?.role === "admin";
   const isVendor = user?.publicMetadata?.role === "vendor";
+
   return (
     <header className="bg-white sticky top-0 z-50 border-b border-b-black py-1 text-black">
       <div className="w-full px-6">

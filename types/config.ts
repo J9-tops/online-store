@@ -1,4 +1,4 @@
-import { categorySchema, SaleSchema } from "./schema";
+import { categorySchema, productSchema, SaleSchema } from "./schema";
 
 const date = new Date();
 
@@ -6,7 +6,6 @@ export const saleConfig = {
   name: "Sale",
   schema: SaleSchema,
   defaultValues: {
-    badge: "",
     couponCode: "",
     description: "",
     discountAmount: "",
@@ -15,6 +14,7 @@ export const saleConfig = {
     title: "",
     validFrom: date,
     validUntil: date,
+    imageURL: "",
   },
   fields: [
     { name: "title", label: "Sale Title", type: "text" as const },
@@ -40,7 +40,7 @@ export const saleConfig = {
     { name: "validUntil", label: "Valid Until", type: "date" as const },
     { name: "isActive", label: "Is Active", type: "checkbox" as const },
     {
-      name: "productImage",
+      name: "imageUrl",
       label: "Product Image",
       placeholder: "Drag or paste image here",
       type: "file" as const,
@@ -60,5 +60,65 @@ export const categoryConfig = {
     { name: "title", label: "Title", type: "text" as const },
     { name: "slug", label: "Slug", type: "text" as const },
     { name: "description", label: "Description", type: "textarea" as const },
+  ],
+};
+
+export const productConfig = {
+  name: "Product",
+  schema: productSchema,
+  defaultValues: {
+    title: "",
+    slug: "",
+    imageUrl: "",
+    description: "",
+    label: "",
+    price: "",
+    categories: [],
+    stock: "",
+    status: undefined,
+  },
+  fields: [
+    { name: "title", label: "Product Name", type: "text" as const },
+    {
+      name: "slug",
+      label: "Slug",
+      type: "text" as const,
+    },
+    {
+      name: "description",
+      label: "Product Description",
+      type: "textarea" as const,
+    },
+    {
+      name: "label",
+      label: "Label",
+      type: "text" as const,
+    },
+    {
+      name: "price",
+      label: "Price",
+      type: "number" as const,
+    },
+    {
+      name: "stock",
+      label: "Stock",
+      type: "number" as const,
+    },
+    {
+      name: "categories",
+      label: "Categories",
+      type: "checkbox" as const,
+    },
+    {
+      name: "status",
+      label: "Status",
+      type: "text" as const,
+    },
+    {
+      name: "imageUrl",
+      label: "Product Image",
+      placeholder: "Drag or paste image here",
+      type: "file" as const,
+    },
   ],
 };

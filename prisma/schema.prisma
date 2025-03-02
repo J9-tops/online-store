@@ -19,26 +19,21 @@ model Category {
   slug        String
   description String
 
-  updatedAt DateTime @updatedAt
-  createdAt DateTime @default(now())
-
   @@unique([title, description])
+  @@index([title])
 }
 
 model Sale {
-  id             String    @id @default(cuid())
+  id             String  @id @default(cuid())
   title          String
   description    String
-  discountBadge  String?
-  discountAmount Float?
-  couponCode     String?
-  validFrom      DateTime?
-  validUntil     DateTime?
-  isActive       Boolean?
-  imageURL       String
-
-  updatedAt DateTime @updatedAt
-  createdAt DateTime @default(now())
+  discountBadge  String
+  discountAmount Float
+  couponCode     String
+  validFrom      String
+  validUntil     String
+  isActive       Boolean
+  imageUrl       String
 
   @@unique([title, description])
   @@index([title])
