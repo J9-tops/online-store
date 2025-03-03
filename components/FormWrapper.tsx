@@ -76,6 +76,8 @@ export function GenericForm<T extends FieldValues>({
   const { notifySuccess, notifyError } = useToast();
 
   const onSubmit = async (values: T) => {
+    console.log("form submitted:", values);
+
     try {
       const response = await axios.post(
         `/api/vendor/${name.toLowerCase()}`,
@@ -98,12 +100,12 @@ export function GenericForm<T extends FieldValues>({
         notifyError("An unexpected error occurred.");
       }
     }
-    console.log("form submitted:", values);
   };
 
   useEffect(() => {
-    if (imageURL) {
-      form.setValue("imgUrl" as Path<T>, imageURL as PathValue<T, Path<T>>);
+    if (imageURL && typeof imageURL === "string" && imageURL.trim() !== "") {
+      console.log("form values:", form.getValues());
+      form.setValue("imageUrl" as Path<T>, imageURL as PathValue<T, Path<T>>);
     }
   }, [imageURL, form]);
 
@@ -112,6 +114,7 @@ export function GenericForm<T extends FieldValues>({
       try {
         const res = await axios.get(`/api/vendor/category`);
         setCategoryList(res.data);
+        console.log("categories:", res.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -153,18 +156,22 @@ export function GenericForm<T extends FieldValues>({
                           >
                             <Checkbox
                               checked={
-                                controllerField.value?.some(
-                                  (cat: CategoryType) => cat.id === category.id
-                                ) || false
+                                controllerField.value?.includes(category.id) ||
+                                false
                               }
                               onCheckedChange={(checked) => {
                                 const newCategories = checked
-                                  ? [...(controllerField.value ?? []), category] // Add the full category object
+                                  ? [
+                                      ...(controllerField.value ?? []),
+                                      category.id,
+                                    ] // Add the full category object
                                   : (controllerField.value ?? []).filter(
-                                      (cat: CategoryType) =>
-                                        cat.id !== category.id
+                                      (catId) => catId !== category.id
                                     ); // Remove the category object
-
+                                console.log(
+                                  "categories checked:",
+                                  newCategories
+                                );
                                 controllerField.onChange(newCategories);
                               }}
                             />
@@ -195,7 +202,7 @@ export function GenericForm<T extends FieldValues>({
                         ))}
                       </RadioGroup>
                     </FormControl>
-                  ) : field.type === "text" || field.type === "number" ? (
+                  ) : field.type === "text" ? (
                     <FormControl>
                       <Input
                         {...controllerField}
@@ -206,6 +213,21 @@ export function GenericForm<T extends FieldValues>({
                           if (field.name === "title") {
                             setTitle(e.target.value);
                           }
+                        }}
+                      />
+                    </FormControl>
+                  ) : field.type === "number" ? (
+                    <FormControl>
+                      <Input
+                        {...controllerField}
+                        type={field.type}
+                        placeholder={field.placeholder}
+                        onChange={(e) => {
+                          const valueAsNumber =
+                            e.target.value === ""
+                              ? undefined
+                              : Number(e.target.value);
+                          controllerField.onChange(valueAsNumber);
                         }}
                       />
                     </FormControl>
@@ -243,7 +265,6 @@ export function GenericForm<T extends FieldValues>({
                     <>
                       <FormControl>
                         <Input
-                          {...controllerField}
                           type={field.type}
                           ref={fileRef}
                           accept="image/*"

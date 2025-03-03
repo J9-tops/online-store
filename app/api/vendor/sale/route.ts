@@ -5,7 +5,6 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    // Ensure the body is not null or undefined
     if (!body || typeof body !== "object") {
       return NextResponse.json(
         {
@@ -28,7 +27,6 @@ export async function POST(req: Request) {
       validUntil,
     } = body;
 
-    // Ensure required fields are present
     if (!title || !validFrom || !validUntil) {
       return NextResponse.json(
         {
@@ -40,10 +38,6 @@ export async function POST(req: Request) {
     }
 
     const formatedDiscountAmount = Number(discountAmount);
-
-    console.log(typeof formatedDiscountAmount, "discount amount type");
-    console.log(typeof validUntil, "valid until type");
-    console.log(typeof validFrom, "valid from type");
 
     await prisma.sale.create({
       data: {
@@ -78,22 +72,20 @@ export async function POST(req: Request) {
   }
 }
 
-// export async function GET() {
-//   try {
-//     const category = await prisma.category.findMany();
-//     NextResponse.json(category, { status: 200 });
-//   } catch {
-//     NextResponse.json(
-//       {
-//         success: false,
-//         message: "Failed to get category",
-//       },
-//       { status: 500 }
-//     );
-
-//     return;
-//   }
-// }
+export async function GET() {
+  try {
+    const category = await prisma.sale.findMany();
+    return NextResponse.json(category, { status: 200 });
+  } catch {
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Failed to get category",
+      },
+      { status: 500 }
+    );
+  }
+}
 
 // export async function PATCH(
 //   req: Request,

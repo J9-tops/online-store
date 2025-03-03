@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE "Sale" ALTER COLUMN "validFrom" SET DATA TYPE TEXT,
-ALTER COLUMN "validUntil" SET DATA TYPE TEXT;

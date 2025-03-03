@@ -14,7 +14,7 @@ export const saleConfig = {
     title: "",
     validFrom: date,
     validUntil: date,
-    imageURL: "",
+    imageUrl: "",
   },
   fields: [
     { name: "title", label: "Sale Title", type: "text" as const },
@@ -72,9 +72,9 @@ export const productConfig = {
     imageUrl: "",
     description: "",
     label: "",
-    price: "",
+    price: 0,
     categories: [],
-    stock: "",
+    stock: 0,
     status: undefined,
   },
   fields: [

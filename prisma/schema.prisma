@@ -14,10 +14,11 @@ datasource db {
 }
 
 model Category {
-  id          String @id @default(cuid())
+  id          String    @id @default(cuid())
   title       String
   slug        String
   description String
+  products    Product[]
 
   @@unique([title, description])
   @@index([title])
@@ -34,6 +35,30 @@ model Sale {
   validUntil     String
   isActive       Boolean
   imageUrl       String
+
+  @@unique([title, description])
+  @@index([title])
+}
+
+enum Status {
+  Hot
+  New
+  Sale
+  Undefined
+}
+
+model Product {
+  id          String @id @default(cuid())
+  title       String
+  slug        String
+  imageUrl    String
+  description String
+  label       String
+  price       Float
+  stock       Int
+  status      Status
+
+  categories Category[]
 
   @@unique([title, description])
   @@index([title])
