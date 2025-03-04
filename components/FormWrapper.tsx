@@ -124,7 +124,7 @@ export function GenericForm<T extends FieldValues>({
   }, []);
 
   return (
-    <Container className="w-full overflow-y-auto h-screen flex flex-col items-center pb-8 pt-4">
+    <Container className="w-full overflow-y-auto h-screen flex flex-col items-center px-0 pt-4 relative">
       <div className="self-start pl-16">
         <p>{`${name}`}</p>
         <h1 className="text-4xl font-bold">
@@ -133,8 +133,9 @@ export function GenericForm<T extends FieldValues>({
       </div>
       <Form {...form}>
         <form
+          id="form"
           onSubmit={form.handleSubmit(onSubmit)}
-          className="lg:w-[80%] my-5 flex flex-col gap-5"
+          className="lg:w-[80%] my-5 flex flex-col gap-5 grow"
         >
           {fields.map((field) => (
             <FormField
@@ -146,43 +147,49 @@ export function GenericForm<T extends FieldValues>({
                   <FormLabel>{field.label}</FormLabel>
 
                   {field.name === "categories" ? (
-                    // Multiple selections for categories
                     <FormControl>
                       <div className="flex flex-wrap gap-2 w-full">
-                        {categoriesList.map((category) => (
-                          <div
-                            key={category.id}
-                            className="flex items-center space-x-2 "
-                          >
-                            <Checkbox
-                              checked={
-                                controllerField.value?.includes(category.id) ||
-                                false
-                              }
-                              onCheckedChange={(checked) => {
-                                const newCategories = checked
-                                  ? [
-                                      ...(controllerField.value ?? []),
-                                      category.id,
-                                    ] // Add the full category object
-                                  : (controllerField.value ?? []).filter(
-                                      (catId) => catId !== category.id
-                                    ); // Remove the category object
-                                console.log(
-                                  "categories checked:",
-                                  newCategories
-                                );
-                                controllerField.onChange(newCategories);
-                              }}
-                            />
+                        {categoriesList.length === 0 ? (
+                          <p className="border border-red-500 border-solid p-2">
+                            No categories yet. Please add some categories for
+                            your products in the category section.
+                          </p>
+                        ) : (
+                          categoriesList.map((category) => (
+                            <div
+                              key={category.id}
+                              className="flex items-center space-x-2 "
+                            >
+                              <Checkbox
+                                checked={
+                                  controllerField.value?.includes(
+                                    category.id
+                                  ) || false
+                                }
+                                onCheckedChange={(checked) => {
+                                  const newCategories = checked
+                                    ? [
+                                        ...(controllerField.value ?? []),
+                                        category.id,
+                                      ] // Add the full category object
+                                    : (controllerField.value ?? []).filter(
+                                        (catId) => catId !== category.id
+                                      ); // Remove the category object
+                                  console.log(
+                                    "categories checked:",
+                                    newCategories
+                                  );
+                                  controllerField.onChange(newCategories);
+                                }}
+                              />
 
-                            <span>{category.title}</span>
-                          </div>
-                        ))}
+                              <span>{category.title}</span>
+                            </div>
+                          ))
+                        )}
                       </div>
                     </FormControl>
                   ) : field.name === "status" ? (
-                    // Single selection for status
                     <FormControl>
                       <RadioGroup
                         value={controllerField.value}
@@ -201,6 +208,32 @@ export function GenericForm<T extends FieldValues>({
                           </div>
                         ))}
                       </RadioGroup>
+                    </FormControl>
+                  ) : field.name === "slug" ? (
+                    <FormControl>
+                      <div className="flex items-center gap-2">
+                        <Input
+                          {...controllerField}
+                          type="text"
+                          placeholder="Enter slug or generate from title"
+                        />
+                        <Button
+                          type="button"
+                          onClick={() => {
+                            const generatedSlug = form
+                              .getValues("title" as Path<T>)
+                              .toLowerCase()
+                              .replace(/[^a-z0-9\s]/g, "")
+                              .replace(/\s+/g, "-");
+                            form.setValue(
+                              "slug" as Path<T>,
+                              generatedSlug as PathValue<T, Path<T>>
+                            );
+                          }}
+                        >
+                          Generate
+                        </Button>
+                      </div>
                     </FormControl>
                   ) : field.type === "text" ? (
                     <FormControl>
@@ -301,11 +334,13 @@ export function GenericForm<T extends FieldValues>({
               )}
             />
           ))}
-          <Button type="submit" className="w-fit">
-            Publish
-          </Button>
         </form>
       </Form>
+      <div className="sticky w-full bg-white p-4 bottom-0 left-0 right-0 border-t shadow-xl">
+        <Button type="submit" className="w-fit" form="form">
+          Publish
+        </Button>
+      </div>
       <ToastContainer />
     </Container>
   );

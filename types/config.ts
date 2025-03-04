@@ -8,7 +8,7 @@ export const saleConfig = {
   defaultValues: {
     couponCode: "",
     description: "",
-    discountAmount: "",
+    discountAmount: 0,
     discountBadge: "",
     isActive: true,
     title: "",

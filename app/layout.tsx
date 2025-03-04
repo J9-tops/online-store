@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <ClerkProvider dynamic>
       <html lang="en">
-        <body className={`antialiased`}>
+        <body>
           <ReduxProvider>{children}</ReduxProvider>
         </body>
       </html>

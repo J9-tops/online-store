@@ -17,7 +17,7 @@ export default function VendorLayout({
       <Sidebar />
       <div className="lg:flex w-full">
         <DataBar />
-        {children}
+        <div className="w-full">{children}</div>
       </div>
     </div>
   );
