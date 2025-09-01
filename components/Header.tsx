@@ -1,6 +1,5 @@
 import logo from "@/images/logo.png";
-import { ClerkLoaded, SignedIn, SignInButton, UserButton } from "@clerk/nextjs";
-import { currentUser } from "@clerk/nextjs/server";
+import { UserButton } from "@clerk/nextjs";
 import Form from "next/form";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,10 +11,6 @@ import CartIcon from "./CartIcon";
 import ToggleMenu from "./ToggleMenu";
 
 const Header = async () => {
-  const user = await currentUser();
-  const isAdmin = user?.publicMetadata?.role === "admin";
-  const isVendor = user?.publicMetadata?.role === "vendor";
-
   return (
     <header className="bg-white sticky top-0 z-50 border-b border-b-black py-1 text-black">
       <div className="w-full px-6">
@@ -43,70 +38,55 @@ const Header = async () => {
             />
           </Form>
           <div className="flex items-center space-x-4 sm:mt-0 flex-1 sm:flex-none">
-            {!isAdmin && !isVendor && <CartIcon />}
-            <ClerkLoaded>
-              <SignedIn>
-                {isAdmin && (
-                  <Link
-                    href={"/admin"}
-                    className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect"
-                  >
-                    <RiAdminLine className="text-2xl text-darkBlue" />
-                    <p className="font-semibold flex-col hidden lg:flex">
-                      <span>Admin</span> <span>Panel</span>
-                    </p>
-                  </Link>
-                )}
+            <CartIcon />
 
-                {isVendor && (
-                  <Link
-                    href={"/vendor"}
-                    className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect"
-                  >
-                    <HiOutlineDatabase className="text-2xl text-darkBlue" />
-                    <p className="font-semibold hidden lg:block">
-                      Vendor Panel
-                    </p>
-                  </Link>
-                )}
-                {/* remove orders if the person is a vendor or admin */}
+            <Link
+              href={"/admin"}
+              className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect"
+            >
+              <RiAdminLine className="text-2xl text-darkBlue" />
+              <p className="font-semibold flex-col hidden lg:flex">
+                <span>Admin</span> <span>Panel</span>
+              </p>
+            </Link>
 
-                {!isAdmin && !isVendor && (
-                  <Link
-                    href={"/orders"}
-                    className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect"
-                  >
-                    <BsBasket className="text-2xl text-darkBlue" />
-                    <div className="lg:flex flex-col hidden">
-                      <p className="text-xs">
-                        <span className="font-semibold">0</span> items
-                      </p>
-                      <p className="font-semibold">Orders</p>
-                    </div>
-                  </Link>
-                )}
-              </SignedIn>
-              {user ? (
-                <div className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect">
-                  <div className="hidden lg:block capitalize">
-                    <UserButton showName />
-                  </div>
-                  <div className="lg:hidden">
-                    <UserButton />
-                  </div>
-                </div>
-              ) : (
-                <SignInButton mode="modal">
-                  <div className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md cursor-pointer hover:shadow-none hoverEffect">
-                    <FiUser className="text-2xl text-darkBlue" />
-                    <div className="lg:flex flex-col hidden">
-                      <p className="text-xs">Account</p>
-                      <p className="font-semibold">Login</p>
-                    </div>
-                  </div>
-                </SignInButton>
-              )}
-            </ClerkLoaded>
+            <Link
+              href={"/vendor"}
+              className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect"
+            >
+              <HiOutlineDatabase className="text-2xl text-darkBlue" />
+              <p className="font-semibold hidden lg:block">Vendor Panel</p>
+            </Link>
+
+            <Link
+              href={"/orders"}
+              className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect"
+            >
+              <BsBasket className="text-2xl text-darkBlue" />
+              <div className="lg:flex flex-col hidden">
+                <p className="text-xs">
+                  <span className="font-semibold">0</span> items
+                </p>
+                <p className="font-semibold">Orders</p>
+              </div>
+            </Link>
+
+            <div className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect">
+              <div className="hidden lg:block capitalize">
+                <UserButton showName />
+              </div>
+              <div className="lg:hidden">
+                <UserButton />
+              </div>
+            </div>
+
+            <div className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md cursor-pointer hover:shadow-none hoverEffect">
+              <FiUser className="text-2xl text-darkBlue" />
+              <div className="lg:flex flex-col hidden">
+                <p className="text-xs">Account</p>
+                <p className="font-semibold">Login</p>
+              </div>
+            </div>
           </div>
         </div>
         <Form action="/search" className="lg:hidden w-full my-2">
