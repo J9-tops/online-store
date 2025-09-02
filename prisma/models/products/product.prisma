@@ -1,0 +1,23 @@
+enum Status {
+    Hot
+    New
+    Sale
+    Undefined
+}
+
+model Product {
+    id          String @id @default(cuid())
+    title       String
+    slug        String
+    imageUrl    String
+    description String
+    label       String
+    price       Float
+    stock       Int
+    status      Status
+
+    categories Category[]
+
+    @@unique([title, description])
+    @@index([title])
+}

@@ -1,5 +1,4 @@
 import ReduxProvider from "@/redux/ReduxProvider";
-import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -14,12 +13,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider dynamic>
-      <html lang="en">
-        <body>
-          <ReduxProvider>{children}</ReduxProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body>
+        <ReduxProvider>{children}</ReduxProvider>
+      </body>
+    </html>
   );
 }

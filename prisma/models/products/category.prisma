@@ -1,0 +1,10 @@
+model Category {
+    id          String    @id @default(cuid())
+    title       String
+    slug        String
+    description String
+    products    Product[]
+
+    @@unique([title, description])
+    @@index([title])
+}

@@ -1,10 +1,10 @@
+import LoginButton from "@/components/LoginButton";
+import SignupButton from "@/components/SignupButton";
 import logo from "@/images/logo.png";
-import { UserButton } from "@clerk/nextjs";
 import Form from "next/form";
 import Image from "next/image";
 import Link from "next/link";
 import { BsBasket } from "react-icons/bs";
-import { FiUser } from "react-icons/fi";
 import { HiOutlineDatabase } from "react-icons/hi";
 import { RiAdminLine } from "react-icons/ri";
 import CartIcon from "./CartIcon";
@@ -71,22 +71,12 @@ const Header = async () => {
               </div>
             </Link>
 
-            <div className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect">
-              <div className="hidden lg:block capitalize">
-                <UserButton showName />
-              </div>
-              <div className="lg:hidden">
-                <UserButton />
-              </div>
-            </div>
-
-            <div className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md cursor-pointer hover:shadow-none hoverEffect">
-              <FiUser className="text-2xl text-darkBlue" />
-              <div className="lg:flex flex-col hidden">
-                <p className="text-xs">Account</p>
-                <p className="font-semibold">Login</p>
-              </div>
-            </div>
+            {/* <div className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect">
+              <div className="hidden lg:block capitalize"></div>
+              <div className="lg:hidden"></div>
+            </div> */}
+            <SignupButton />
+            <LoginButton />
           </div>
         </div>
         <Form action="/search" className="lg:hidden w-full my-2">
