@@ -25,7 +25,7 @@ enum UserRole {
     Admin
     Vendor
     User  
-
+}
 
 
 model Sale {
@@ -44,7 +44,6 @@ model Sale {
     @@index([title])
 }
 
-}
 
 model Product {
     id          String @id @default(cuid())

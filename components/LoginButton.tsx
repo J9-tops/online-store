@@ -13,7 +13,7 @@ export default function LoginButton() {
   return (
     <button
       onClick={openLoginModal}
-      className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md cursor-pointer hover:shadow-none hoverEffect"
+      className="flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md cursor-pointer hover:shadow-none hoverEffect"
     >
       <FiUser className="text-2xl text-darkBlue" />
       <div className="lg:flex flex-col hidden">

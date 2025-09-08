@@ -1,16 +1,25 @@
 import LoginButton from "@/components/LoginButton";
-import SignupButton from "@/components/SignupButton";
 import logo from "@/images/logo.png";
 import Form from "next/form";
+import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import { BsBasket } from "react-icons/bs";
 import { HiOutlineDatabase } from "react-icons/hi";
 import { RiAdminLine } from "react-icons/ri";
+import { auth } from "../lib/auth";
 import CartIcon from "./CartIcon";
 import ToggleMenu from "./ToggleMenu";
 
 const Header = async () => {
+  const headersList = await headers();
+
+  const session = await auth.api.getSession({
+    headers: headersList,
+  });
+
+  // if (!session) redirect("/auth/login")
+
   return (
     <header className="bg-white sticky top-0 z-50 border-b border-b-black py-1 text-black">
       <div className="w-full px-6">
@@ -40,43 +49,52 @@ const Header = async () => {
           <div className="flex items-center space-x-4 sm:mt-0 flex-1 sm:flex-none">
             <CartIcon />
 
-            <Link
-              href={"/admin"}
-              className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect"
-            >
-              <RiAdminLine className="text-2xl text-darkBlue" />
-              <p className="font-semibold flex-col hidden lg:flex">
-                <span>Admin</span> <span>Panel</span>
-              </p>
-            </Link>
-
-            <Link
-              href={"/vendor"}
-              className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect"
-            >
-              <HiOutlineDatabase className="text-2xl text-darkBlue" />
-              <p className="font-semibold hidden lg:block">Vendor Panel</p>
-            </Link>
-
-            <Link
-              href={"/orders"}
-              className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect"
-            >
-              <BsBasket className="text-2xl text-darkBlue" />
-              <div className="lg:flex flex-col hidden">
-                <p className="text-xs">
-                  <span className="font-semibold">0</span> items
+            {session && session.user.role === "Admin" && (
+              <Link
+                href={"/admin"}
+                className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect"
+              >
+                <RiAdminLine className="text-2xl text-darkBlue" />
+                <p className="font-semibold flex-col hidden lg:flex">
+                  <span>Admin</span> <span>Panel</span>
                 </p>
-                <p className="font-semibold">Orders</p>
-              </div>
-            </Link>
+              </Link>
+            )}
 
-            {/* <div className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect">
-              <div className="hidden lg:block capitalize"></div>
-              <div className="lg:hidden"></div>
-            </div> */}
-            <SignupButton />
-            <LoginButton />
+            {session && session.user.role === "Vendor" && (
+              <Link
+                href={"/vendor"}
+                className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect"
+              >
+                <HiOutlineDatabase className="text-2xl text-darkBlue" />
+                <p className="font-semibold hidden lg:block">Vendor Panel</p>
+              </Link>
+            )}
+
+            {session && session.user.role === "User" && (
+              <Link
+                href={"/orders"}
+                className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect"
+              >
+                <BsBasket className="text-2xl text-darkBlue" />
+                <div className="lg:flex flex-col hidden">
+                  <p className="text-xs">
+                    <span className="font-semibold">0</span> items
+                  </p>
+                  <p className="font-semibold">Orders</p>
+                </div>
+              </Link>
+            )}
+
+            {session && (
+              <div className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect">
+                <div className="hidden lg:block capitalize">
+                  {session.user.name.split(",")[0]}
+                </div>
+                <div className="lg:hidden"></div>
+              </div>
+            )}
+            {!session && <LoginButton />}
           </div>
         </div>
         <Form action="/search" className="lg:hidden w-full my-2">

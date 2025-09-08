@@ -100,6 +100,7 @@ const options = {
       generateId: false,
     },
   },
+  telemetry: { enabled: false },
   plugins: [
     admin({
       defaultRole: UserRole.User,
