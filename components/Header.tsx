@@ -89,7 +89,7 @@ const Header = async () => {
             {session && (
               <div className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect">
                 <div className="hidden lg:block capitalize">
-                  {session.user.name.split(",")[0]}
+                  {session.user.name.split(" ")[0]}
                 </div>
                 <div className="lg:hidden"></div>
               </div>
