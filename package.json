@@ -7,11 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:push": "pnpm dlx prisma db push",
-    "migrate": "pnpm dlx prisma migrate dev",
-    "migrate:status": "pnpm dlx prisma migrate status",
-    "generate": "pnpm dlx prisma generate",
-    "studio": "pnpm dlx prisma studio"
+    "db:push": "pnpm prisma db push",
+    "migrate": "pnpm prisma migrate dev",
+    "migrate:reset": "pnpm prisma migrate reset",
+    "migrate:status": "pnpm prisma migrate status",
+    "generate": "pnpm prisma generate",
+    "studio": "pnpm prisma studio"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

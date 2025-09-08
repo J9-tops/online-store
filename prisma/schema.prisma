@@ -5,10 +5,124 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client-js"  
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+
+model Sale {
+    id             String  @id @default(cuid())
+    title          String
+    description    String
+    discountBadge  String
+    discountAmount Float
+    couponCode     String
+    validFrom      String
+    validUntil     String
+    isActive       Boolean
+    imageUrl       String
+
+    @@unique([title, description])
+    @@index([title])
+}
+
+enum Status {
+    Hot
+    New
+    Sale
+    Undefined
+}
+
+model Product {
+    id          String @id @default(cuid())
+    title       String
+    slug        String
+    imageUrl    String
+    description String
+    label       String
+    price       Float
+    stock       Int
+    status      Status
+
+    categories Category[]
+
+    @@unique([title, description])
+    @@index([title])
+}
+
+
+model Category {
+    id          String    @id @default(cuid())
+    title       String
+    slug        String
+    description String
+    products    Product[]
+
+    @@unique([title, description])
+    @@index([title])
+}
+
+
+model User {
+    id            String   @id @default(cuid())
+    name          String
+    email         String   @unique
+    emailVerified Boolean  @default(false)
+    image         String?
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+
+    sessions Session[]
+    account  Account[]
+}
+
+model Session {
+    id        String   @id @default(cuid())
+    userId    String
+    token     String   @unique
+    expiresAt DateTime
+    ipAddress String?
+    userAgent String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    user User @relation(fields: [userId], references: [id])
+
+    @@index([userId])
+}
+
+model Account {
+    id                    String    @id @default(cuid())
+    userId                String
+    accountId             String
+    providerId            String
+    accessToken           String?
+    refreshToken          String?
+    accessTokenExpiresAt  DateTime?
+    refreshTokenExpiresAt DateTime?
+    scope                 String?
+    idToken               String?
+    password              String?
+    createdAt             DateTime  @default(now())
+    updatedAt             DateTime  @updatedAt
+
+    user User @relation(fields: [userId], references: [id])
+
+    @@index([userId])
+}
+
+model VerificationToken {
+    id         String   @id @default(cuid())
+    identifier String
+    value      String   @unique
+    expiresAt  DateTime
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    @@index([identifier])
+}
+
