@@ -23,14 +23,14 @@ export const categorySchema = z.object({
 export type CategoryType = z.infer<typeof categorySchema>;
 
 export const productSchema = z.object({
-  title: z.string().optional(),
-  slug: z.string().optional(),
-  imageUrl: z.string().optional(),
-  description: z.string().optional(),
-  label: z.string().optional(),
-  price: z.number().optional(),
-  categories: z.array(z.string()).optional(),
-  stock: z.number().optional(),
+  title: z.string(),
+  slug: z.string(),
+  imageUrl: z.string(),
+  description: z.string(),
+  label: z.string(),
+  price: z.number(),
+  categories: z.array(z.string()),
+  stock: z.number(),
   status: z.enum(["Hot", "New", "Sale"]),
 });
 

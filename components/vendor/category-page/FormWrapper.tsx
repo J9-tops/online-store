@@ -91,7 +91,7 @@ export default function FormWrapper() {
           form="form"
           disabled={submitting}
         >
-          Publish
+          {submitting ? "Publishing..." : "Publish"}
         </Button>
       </div>
     </Container>

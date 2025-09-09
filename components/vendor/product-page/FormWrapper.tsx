@@ -1,5 +1,6 @@
 "use client";
 
+import { createProduct } from "@/actions/product-actions";
 import Container from "@/components/Container";
 import ProgressBar from "@/components/ProgressBar";
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 type Option = {
   id: string;
@@ -62,16 +64,25 @@ export default function FormWrapper({ categories = [] }: FormWrapperProps) {
     const selectedCategoryObjects = values
       .map((categoryId) => categoriesList.find((cat) => cat.id === categoryId))
       .filter(Boolean) as CategoryType[];
-    console.log(selectedCategoryObjects);
     setSelectedCategories(selectedCategoryObjects);
+    setValue("categories", values);
   };
 
   const onSubmit = async (data: ProductType) => {
-    const formDataWithCategories = {
+    setSubmitting(true);
+    const formData = {
       ...data,
-      categories: selectedCategories,
+      categories: selectedCategories.map((category) => category.id),
     };
-    console.log(formDataWithCategories);
+    const response = await createProduct(formData);
+
+    if (response.success) {
+      setSubmitting(false);
+      toast.success(response.message);
+    } else {
+      setSubmitting(false);
+      toast.success(response.message);
+    }
   };
 
   return (
@@ -145,6 +156,11 @@ export default function FormWrapper({ categories = [] }: FormWrapperProps) {
             searchPlaceholder="Search Categories"
             value={selectedCategories.map((cat) => cat.id)}
           />
+          <Input
+            type="hidden"
+            {...register("categories")}
+            value={selectedCategories.map((cat) => cat.id)}
+          />
         </div>
         <div className="space-y-2 flex flex-col">
           <Label htmlFor="status">Status</Label>
@@ -197,8 +213,13 @@ export default function FormWrapper({ categories = [] }: FormWrapperProps) {
         </div>
       </form>
       <div className="sticky w-full bg-white p-4 bottom-0 left-0 right-0 border-t shadow-xl">
-        <Button type="submit" className="w-fit" form="product-form">
-          Publish
+        <Button
+          type="submit"
+          className="w-fit"
+          form="product-form"
+          disabled={submitting}
+        >
+          {submitting ? "Publishing..." : "Publish"}
         </Button>
       </div>
     </Container>
