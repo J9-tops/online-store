@@ -2,7 +2,7 @@ export type CategoryType = {
   id?: string;
   title: string;
   slug: string;
-  description?: string;
+  description: string;
 };
 
 export type CategoryState = {

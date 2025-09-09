@@ -2,7 +2,7 @@
 import axios, { AxiosProgressEvent } from "axios";
 import React, { useRef, useState } from "react";
 
-const useFileUpload = () => {
+const useFileUpload = (onUploadComplete?: (url: string) => void) => {
   const [progress, setProgress] = useState(0);
   const fileRef = useRef(null);
   const [status, setStatus] = useState<"idle" | "uploading">("idle");
@@ -43,9 +43,12 @@ const useFileUpload = () => {
             },
           }
         );
-
+        const uploadedURL = response.data?.url;
         setImageURL(response.data?.url);
         setProgress(100);
+        if (onUploadComplete && uploadedURL) {
+          onUploadComplete(uploadedURL);
+        }
       } catch (error) {
         console.error("Upload error:", error);
       }

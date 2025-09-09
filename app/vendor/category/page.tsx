@@ -1,10 +1,7 @@
-"use client";
-
-import { GenericForm } from "@/components/FormWrapper";
-import { categoryConfig } from "@/types/config";
+import FormWrapper from "@/components/vendor/category-page/FormWrapper";
 
 const Page = () => {
-  return <GenericForm {...categoryConfig} />;
+  return <FormWrapper />;
 };
 
 export default Page;

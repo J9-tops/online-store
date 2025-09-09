@@ -1,10 +1,7 @@
-"use client";
-
-import { GenericForm } from "@/components/FormWrapper";
-import { saleConfig } from "@/types/config";
+import FormWrapper from "@/components/vendor/sale-page/FormWrapper";
 
 const Page = () => {
-  return <GenericForm {...saleConfig} />;
+  return <FormWrapper />;
 };
 
 export default Page;

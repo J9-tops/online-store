@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"  
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -13,69 +13,62 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 enum Status {
-    Hot
-    New
-    Sale
-    Undefined
+  Hot
+  New
+  Sale
+  Undefined
 }
 
 enum UserRole {
-    Admin
-    Vendor
-    User  
+  Admin
+  Vendor
+  User
 }
-
 
 model Sale {
-    id             String  @id @default(cuid())
-    title          String
-    description    String
-    discountBadge  String
-    discountAmount Float
-    couponCode     String
-    validFrom      String
-    validUntil     String
-    isActive       Boolean
-    imageUrl       String
+  id             String   @id @default(cuid())
+  title          String
+  description    String
+  discountBadge  String
+  discountAmount Float
+  couponCode     String
+  validFrom      DateTime
+  validUntil     DateTime
+  isActive       Boolean
+  imageUrl       String
 
-    @@unique([title, description])
-    @@index([title])
+  @@unique([title, description])
+  @@index([title])
 }
-
 
 model Product {
-    id          String @id @default(cuid())
-    title       String
-    slug        String
-    imageUrl    String
-    description String
-    label       String
-    price       Float
-    stock       Int
-    status      Status
+  id          String @id @default(cuid())
+  title       String
+  slug        String
+  imageUrl    String
+  description String
+  label       String
+  price       Float
+  stock       Int
+  status      Status
 
-    categories Category[]
+  categories Category[]
 
-    @@unique([title, description])
-    @@index([title])
+  @@unique([title, description])
+  @@index([title])
 }
-
 
 model Category {
-    id          String    @id @default(cuid())
-    title       String
-    slug        String
-    description String
-    products    Product[]
+  id          String    @id @default(cuid())
+  title       String
+  slug        String
+  description String
+  products    Product[]
 
-    @@unique([title, description])
-    @@index([title])
+  @@unique([title, description])
+  @@index([title])
 }
-
-
-
 
 model User {
   id        String   @id @default(cuid())
@@ -146,5 +139,3 @@ model Verification {
 
   @@map("verifications")
 }
-
-

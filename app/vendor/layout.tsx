@@ -3,6 +3,7 @@ import Sidebar from "@/components/vendor/Sidebar";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { ToastContainer } from "react-toastify";
 import "../globals.css";
 
 export const metadata = {
@@ -29,6 +30,7 @@ export default async function VendorLayout({
       <div className="lg:flex w-full">
         <DataBar />
         <div className="w-full">{children}</div>
+        <ToastContainer />
       </div>
     </div>
   );
