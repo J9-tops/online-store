@@ -1,10 +1,10 @@
-"use client";
+import { getAllCategories } from "@/actions/category-actions";
+import FormWrapper from "@/components/vendor/product-page/FormWrapper";
 
-import { GenericForm } from "@/components/FormWrapper";
-import { productConfig } from "@/types/config";
+const Page = async () => {
+  const { categories } = await getAllCategories();
 
-const Page = () => {
-  return <GenericForm {...productConfig} />;
+  return <FormWrapper categories={categories ?? []} />;
 };
 
 export default Page;

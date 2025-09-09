@@ -30,7 +30,7 @@ export default function FormWrapper() {
   const [title, setTitle] = useState(saleConfig.defaultValues.title);
   const [submitting, setSubmitting] = useState(false);
 
-  const { register, handleSubmit, setValue, watch } = useForm<SaleType>({
+  const { register, handleSubmit, setValue, watch, reset } = useForm<SaleType>({
     resolver: zodResolver(SaleSchema),
     defaultValues: saleConfig.defaultValues,
   });
@@ -49,6 +49,7 @@ export default function FormWrapper() {
     if (response.success) {
       toast(response.message);
       setSubmitting(false);
+      reset();
     } else {
       toast(response.message);
       setSubmitting(false);

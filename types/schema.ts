@@ -31,7 +31,7 @@ export const productSchema = z.object({
   price: z.number().optional(),
   categories: z.array(z.string()).optional(),
   stock: z.number().optional(),
-  status: z.enum(["Hot", "New", "Sale"]).nullable().optional(),
+  status: z.enum(["Hot", "New", "Sale"]),
 });
 
 export type ProductType = z.infer<typeof productSchema>;

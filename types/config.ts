@@ -75,7 +75,7 @@ export const productConfig = {
     price: 0,
     categories: [],
     stock: 0,
-    status: undefined,
+    status: "New" as "Hot" | "New" | "Sale",
   },
   fields: [
     { name: "title", label: "Product Name", type: "text" as const },

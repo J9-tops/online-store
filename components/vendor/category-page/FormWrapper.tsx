@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 export default function FormWrapper() {
-  const { handleSubmit, register, setValue } = useForm<CategoryType>({
+  const { handleSubmit, register, setValue, reset } = useForm<CategoryType>({
     resolver: zodResolver(categorySchema),
     defaultValues: categoryConfig.defaultValues,
   });
@@ -30,7 +30,6 @@ export default function FormWrapper() {
       .replace(/[^a-z0-9\s]/g, "")
       .replace(/\s+/g, "-");
     setValue("slug", generatedSlug);
-    console.log(generatedSlug);
   };
 
   const onSubmit = async (data: CategoryType) => {
@@ -39,6 +38,7 @@ export default function FormWrapper() {
     if (response.success) {
       toast(response.message);
       setSubmitting(false);
+      reset();
     } else {
       toast(response.message);
       setSubmitting(false);
@@ -79,7 +79,7 @@ export default function FormWrapper() {
           </div>
         </div>
         <div className="space-y-2 flex flex-col">
-          <Label htmlFor="description">Slug</Label>
+          <Label htmlFor="description">Description</Label>
           <Textarea rows={4} {...register("description")} />
         </div>
       </form>
