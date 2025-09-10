@@ -17,7 +17,6 @@ enum Status {
   Hot
   New
   Sale
-  Undefined
 }
 
 enum UserRole {
@@ -43,7 +42,7 @@ model Sale {
 }
 
 model Product {
-  id          String @id @default(cuid())
+  id          String  @id @default(cuid())
   title       String
   slug        String
   imageUrl    String
@@ -51,7 +50,7 @@ model Product {
   label       String
   price       Float
   stock       Int
-  status      Status
+  status      Status?
 
   categories Category[]
 

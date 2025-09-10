@@ -43,3 +43,18 @@ export async function createSale(data: SaleType) {
     return { error: "Sale not created" };
   }
 }
+
+export async function getAllSales() {
+  try {
+    const sales = await prisma.sale.findMany();
+
+    return {
+      success: true,
+      sales,
+    };
+  } catch (error) {
+    console.log(error);
+
+    return { error: "Sale not found" };
+  }
+}

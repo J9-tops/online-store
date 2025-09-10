@@ -42,3 +42,43 @@ export async function createProduct(data: ProductType) {
     return { error: "Product failed to create" };
   }
 }
+
+export async function getProductsBySlug(slug: string) {
+  try {
+    const product = await prisma.product.findFirst({
+      where: {
+        slug: {
+          equals: slug,
+        },
+      },
+    });
+
+    return {
+      success: true,
+      product,
+    };
+  } catch (err) {
+    console.log(err);
+
+    return { success: false, error: "Product not found" };
+  }
+}
+
+export async function getAllProducts() {
+  try {
+    const products = await prisma.product.findMany({
+      include: {
+        categories: true,
+      },
+    });
+
+    return {
+      success: true,
+      products,
+    };
+  } catch (err) {
+    console.log(err);
+
+    return { success: false, error: "Products not found" };
+  }
+}

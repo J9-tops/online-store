@@ -1,3 +1,4 @@
+import cartSlice from "@/redux/features/cart/cartSlice";
 import { authModalReducer } from "@/redux/features/modals";
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./features/auth/authSlice";
@@ -8,6 +9,7 @@ export const store = configureStore({
     auth: authReducer,
     vendorCategory: categoryReducer,
     authModal: authModalReducer,
+    cart: cartSlice,
   },
 });
 
