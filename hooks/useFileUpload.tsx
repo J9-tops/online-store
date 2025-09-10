@@ -48,6 +48,7 @@ const useFileUpload = (onUploadComplete?: (url: string) => void) => {
         setProgress(100);
         if (onUploadComplete && uploadedURL) {
           onUploadComplete(uploadedURL);
+          setStatus("idle");
         }
       } catch (error) {
         console.error("Upload error:", error);
@@ -81,6 +82,7 @@ const useFileUpload = (onUploadComplete?: (url: string) => void) => {
     handleDrop,
     imageURL,
     setStatus,
+    setImageURL,
   };
 };
 

@@ -18,7 +18,7 @@ const Header = async () => {
     headers: headersList,
   });
 
-  // if (!session) redirect("/auth/login")
+  console.log(session);
 
   return (
     <header className="bg-white sticky top-0 z-50 border-b border-b-black py-1 text-black">

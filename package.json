@@ -12,7 +12,8 @@
     "migrate:reset": "pnpm prisma migrate reset",
     "migrate:status": "pnpm prisma migrate status",
     "generate": "pnpm prisma generate",
-    "studio": "pnpm prisma studio"
+    "studio": "pnpm prisma studio",
+    "db:wipe": "ts-node ./utils/truncate-table.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -58,6 +59,7 @@
     "postcss": "^8",
     "prisma": "^6.3.1",
     "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }

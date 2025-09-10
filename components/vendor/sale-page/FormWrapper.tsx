@@ -38,8 +38,15 @@ export default function FormWrapper() {
   const validFromValue = watch("validFrom");
   const validUntilValue = watch("validUntil");
 
-  const { handleFileUpload, progress, fileRef, status, imageURL, setStatus } =
-    useFileUpload((url) => setValue("imageUrl", url));
+  const {
+    handleFileUpload,
+    progress,
+    fileRef,
+    status,
+    imageURL,
+    setStatus,
+    setImageURL,
+  } = useFileUpload((url) => setValue("imageUrl", url));
 
   const onSubmit = async (data: SaleType) => {
     setSubmitting(true);
@@ -50,6 +57,8 @@ export default function FormWrapper() {
       toast(response.message);
       setSubmitting(false);
       reset();
+      setImageURL("");
+      setTitle(saleConfig.defaultValues.title);
     } else {
       toast(response.message);
       setSubmitting(false);

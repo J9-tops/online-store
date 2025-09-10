@@ -52,8 +52,15 @@ export default function FormWrapper({ categories = [] }: FormWrapperProps) {
     defaultValues: productConfig.defaultValues,
   });
 
-  const { handleFileUpload, progress, fileRef, status, imageURL, setStatus } =
-    useFileUpload((url) => setValue("imageUrl", url));
+  const {
+    handleFileUpload,
+    progress,
+    fileRef,
+    status,
+    imageURL,
+    setStatus,
+    setImageURL,
+  } = useFileUpload((url) => setValue("imageUrl", url));
 
   const generateSlug = () => {
     const generatedSlug = title
@@ -74,6 +81,7 @@ export default function FormWrapper({ categories = [] }: FormWrapperProps) {
   const handleStatusChange = (value: string) => {
     const status = value as "Hot" | "New" | "Sale";
     setSelectedStatus(status);
+
     setValue("status", status);
   };
 
@@ -89,6 +97,9 @@ export default function FormWrapper({ categories = [] }: FormWrapperProps) {
       setSubmitting(false);
       toast.success(response.message);
       reset();
+      setTitle(productConfig.defaultValues.title);
+      setImageURL("");
+      setSelectedCategories([]);
     } else {
       setSubmitting(false);
       toast.success(response.message);
@@ -100,7 +111,7 @@ export default function FormWrapper({ categories = [] }: FormWrapperProps) {
       <div className="self-start pl-16">
         <p>Category</p>
         <h1 className="text-4xl font-bold capitalize">
-          {title === "" ? "New Sale" : title}
+          {title === "" ? "New Product" : title}
         </h1>
       </div>
       <form

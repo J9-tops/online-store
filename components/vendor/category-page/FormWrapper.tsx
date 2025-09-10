@@ -39,6 +39,7 @@ export default function FormWrapper() {
       toast(response.message);
       setSubmitting(false);
       reset();
+      setTitle(categoryConfig.defaultValues.title);
     } else {
       toast(response.message);
       setSubmitting(false);

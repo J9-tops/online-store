@@ -18,7 +18,7 @@ export default async function VendorLayout({
 }) {
   const headersList = await headers();
 
-  const session = auth.api.getSession({
+  const session = await auth.api.getSession({
     headers: headersList,
   });
 
