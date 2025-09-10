@@ -16,7 +16,7 @@ import {
 } from "./ui/carousel";
 
 export default function DiscountBanner() {
-  const { data: sales, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["sales"],
     queryFn: getAllSales,
     staleTime: Infinity,
@@ -24,11 +24,12 @@ export default function DiscountBanner() {
   });
 
   if (isLoading) return <p>Loading...</p>;
+
   return (
     <Carousel className="w-full max-w-screen-xl mx-auto mt-10 mb-5">
       <CarouselContent>
-        {Array.isArray(sales) ? (
-          sales.map((sale: SaleType) => (
+        {Array.isArray(data?.sales) ? (
+          data.sales.map((sale: SaleType) => (
             <CarouselItem key={sale?.id}>
               <Card className="overflow-hidden">
                 <CardContent className="p-0">
@@ -80,9 +81,7 @@ export default function DiscountBanner() {
         ) : (
           <div className="w-full text-center py-8">
             <p className="text-red-500">
-              {sales && typeof sales === "object" && "error" in sales
-                ? sales.error
-                : "No sales available."}
+              {!data?.sales && "No sales available."}
             </p>
           </div>
         )}

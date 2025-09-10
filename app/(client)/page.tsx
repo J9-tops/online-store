@@ -4,7 +4,7 @@ import ProductList from "@/components/ProductList";
 
 export default async function Home() {
   return (
-    <Container className="pb-10">
+    <Container className="pb-10 overflow-auto">
       <DiscountBanner />
       <ProductList title={true} />
     </Container>
