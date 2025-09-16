@@ -38,3 +38,25 @@ export async function getAllCategories() {
     return { error: "Internal Server Error" };
   }
 }
+
+export async function getCategoryProductCount(categorySlug: string) {
+  try {
+    const category = await prisma.category.findFirst({
+      where: {
+        slug: categorySlug,
+      },
+      include: {
+        products: true,
+      },
+    });
+    const categoryCount = category?.products.length;
+
+    return {
+      success: true,
+      count: categoryCount,
+    };
+  } catch (err) {
+    console.log(err);
+    return { error: "Internal Server Error" };
+  }
+}
