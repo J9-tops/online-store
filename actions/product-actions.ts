@@ -82,3 +82,30 @@ export async function getAllProducts() {
     return { success: false, error: "Products not found" };
   }
 }
+
+export async function getProducts() {
+  try {
+    const products = await prisma.product.findMany({
+      include: {
+        categories: {
+          select: {
+            title: true,
+          },
+        },
+      },
+    });
+    const mapped = products.map((p) => ({
+      ...p,
+      categories: p.categories.map((c) => c.title),
+    }));
+
+    return {
+      success: true,
+      products: mapped,
+    };
+  } catch (err) {
+    console.log(err);
+
+    return { success: false, error: "Products not found" };
+  }
+}

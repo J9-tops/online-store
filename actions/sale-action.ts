@@ -17,8 +17,6 @@ export async function createSale(data: SaleType) {
       validUntil,
     } = data;
 
-    console.log(typeof validFrom);
-
     await prisma.sale.create({
       data: {
         couponCode,

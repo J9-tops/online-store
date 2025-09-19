@@ -2,7 +2,7 @@
 
 import { useCategories } from "@/services/category";
 import { CategoryType } from "@/types/schema";
-import CategoryCard from "../sale-page/DataBarCard";
+import CategoryCard from "./DataBarCard";
 
 export default function CategoryDataBar() {
   const { data: categories, isLoading, error } = useCategories();

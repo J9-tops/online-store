@@ -11,21 +11,29 @@ const DataBar = () => {
   function render(pathname: string) {
     switch (pathname) {
       case "/vendor/category":
-        return <CategoryDataBar />;
+        return (
+          <div className="lg:w-[60%] lg:border-r lg:border-solid lg:border-gray-200 lg:h-screen px-4">
+            <CategoryDataBar />
+          </div>
+        );
       case "/vendor/sale":
-        return <SaleDataBar />;
-      case "/vendor/category":
-        return <ProductDataBar />;
+        return (
+          <div className="lg:w-[60%] lg:border-r lg:border-solid lg:border-gray-200 lg:h-screen px-4">
+            <SaleDataBar />
+          </div>
+        );
+      case "/vendor/product":
+        return (
+          <div className="lg:w-[60%] lg:border-r lg:border-solid lg:border-gray-200 lg:h-screen px-4">
+            <ProductDataBar />
+          </div>
+        );
       default:
         return null;
     }
   }
 
-  return (
-    <div className="lg:w-[60%] lg:border-r lg:border-solid lg:border-gray-200 lg:h-screen px-4">
-      {render(pathname)}
-    </div>
-  );
+  return render(pathname);
 };
 
 export default DataBar;

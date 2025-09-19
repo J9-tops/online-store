@@ -1,36 +1,33 @@
 "use client";
 
-import { useCategoryProductCount } from "@/services/category";
-import { CategoryType } from "@/types/schema";
+import { SaleType } from "@/types/schema";
+import Image from "next/image";
 
 type Props = {
-  category: CategoryType;
+  sale: SaleType;
 };
 
-const CategoryCard = ({ category }: Props) => {
-  const { data: count, isLoading } = useCategoryProductCount(category.slug);
-
+const SaleCard = ({ sale }: Props) => {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 py-1 shadow-md overflow-hidden hover:shadow-lg transition-shadow w-full">
-      <div className="relative flex items-center justify-center">
-        <div className="text-center text-black">
-          <h3 className="text-xl font-bold">{category.title}</h3>
-        </div>
+    <div className="bg-white cursor-pointer rounded-lg border border-gray-200 shadow-md overflow-hidden hover:shadow-lg transition-shadow w-full flex gap-3 py-2 px-3 relative">
+      <div className="p-1 border border-gray-200 rounded-sm w-fit h-fit my-auto">
+        <Image alt={sale.title} src={sale.imageUrl} width={40} height={40} />
       </div>
-
-      <div className="p-1 text-center">
-        <p className="text-gray-600 text-sm mb-3">{category.description}</p>
-
-        <span className="text-lg font-semibold text-black">
-          {isLoading ? (
-            <span className="animate-pulse">Loading...</span>
-          ) : (
-            `${count} Products`
-          )}
+      <div className="flex flex-col gap-1 w-full">
+        <h3 className="text-base font-bold">{sale.title}</h3>
+        <p className="text-gray-600">{sale.description}</p>
+      </div>
+      <div className="absolute top-1 right-2">
+        <span
+          className={`px-2 py-1 rounded-full text-xs font-medium ${
+            sale.isActive ? "bg-green-500 text-white" : "bg-gray-400 text-white"
+          }`}
+        >
+          {sale.isActive ? "Active" : "Inactive"}
         </span>
       </div>
     </div>
   );
 };
 
-export default CategoryCard;
+export default SaleCard;
