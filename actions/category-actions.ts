@@ -60,3 +60,66 @@ export async function getCategoryProductCount(categorySlug: string) {
     return { error: "Internal Server Error" };
   }
 }
+
+export async function searchCategory(
+  searchTerm: string,
+  options?: {
+    includeProducts?: boolean;
+    limit?: number;
+    offset?: number;
+  }
+) {
+  try {
+    if (!searchTerm || searchTerm.trim() === "") {
+      return {
+        success: true,
+        categories: [],
+        message: "Please provide a search term",
+      };
+    }
+
+    const { includeProducts = false, limit, offset } = options || {};
+
+    const categories = await prisma.category.findMany({
+      where: {
+        OR: [
+          {
+            title: {
+              contains: searchTerm,
+              mode: "insensitive",
+            },
+          },
+          {
+            description: {
+              contains: searchTerm,
+              mode: "insensitive",
+            },
+          },
+          {
+            slug: {
+              contains: searchTerm,
+              mode: "insensitive",
+            },
+          },
+        ],
+      },
+      include: {
+        products: includeProducts,
+      },
+      take: limit,
+      skip: offset,
+      orderBy: {
+        title: "asc",
+      },
+    });
+
+    return {
+      success: true,
+      categories,
+      count: categories.length,
+    };
+  } catch (err) {
+    console.log(err);
+    return { error: "Internal Server Error" };
+  }
+}

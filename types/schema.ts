@@ -32,7 +32,7 @@ export const productSchema = z.object({
   description: z.string(),
   label: z.string(),
   price: z.number(),
-  categories: z.array(z.string()),
+  categories: z.array(categorySchema),
   stock: z.number(),
   status: z.enum(["Hot", "New", "Sale"]).nullable(),
 });

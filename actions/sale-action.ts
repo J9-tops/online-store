@@ -56,3 +56,54 @@ export async function getAllSales() {
     return { error: "Sale not found" };
   }
 }
+
+export async function searchSale(
+  searchTerm: string,
+  options?: {
+    limit?: number;
+    offset?: number;
+  }
+) {
+  try {
+    if (!searchTerm || searchTerm.trim() === "") {
+      return {
+        success: true,
+        sale: [],
+        message: "Please provide a search term",
+      };
+    }
+
+    const sales = await prisma.sale.findMany({
+      where: {
+        OR: [
+          {
+            title: {
+              contains: searchTerm,
+              mode: "insensitive",
+            },
+          },
+          {
+            description: {
+              contains: searchTerm,
+              mode: "insensitive",
+            },
+          },
+        ],
+      },
+      take: options?.limit,
+      skip: options?.offset,
+      orderBy: {
+        title: "asc",
+      },
+    });
+
+    return {
+      success: true,
+      sales,
+      count: sales.length,
+    };
+  } catch (err) {
+    console.log(err);
+    return { error: "Internal Server Error" };
+  }
+}

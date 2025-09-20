@@ -1,5 +1,9 @@
+import {
+  getAllCategories,
+  getCategoryProductCount,
+  searchCategory,
+} from "@/actions/category-actions";
 import { useQuery } from "@tanstack/react-query";
-import { getAllCategories, getCategoryProductCount } from "@/actions/category-actions";
 
 export function useCategories() {
   return useQuery({
@@ -24,6 +28,25 @@ export function useCategoryProductCount(categorySlug: string) {
       }
       return result.count || 0;
     },
-    enabled: !!categorySlug, 
+    enabled: !!categorySlug,
+  });
+}
+
+export function useSearchCategories(
+  searchTerm: string,
+  options?: { enabled?: boolean }
+) {
+  return useQuery({
+    queryKey: ["search-categories", searchTerm],
+    queryFn: async () => {
+      const result = await searchCategory(searchTerm);
+      if (result.error) {
+        throw new Error(result.error);
+      }
+      return result.categories || [];
+    },
+    enabled: options?.enabled ?? searchTerm.trim().length > 0,
+    staleTime: 30000,
+    refetchOnWindowFocus: false,
   });
 }
