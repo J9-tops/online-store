@@ -7,6 +7,7 @@ export const SaleSchema = z.object({
   discountBadge: z.string(),
   discountAmount: z.number(),
   couponCode: z.string(),
+  slug: z.string().optional(),
   validFrom: z.date(),
   validUntil: z.date(),
   isActive: z.boolean().default(true),

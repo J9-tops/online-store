@@ -17,12 +17,18 @@ export async function createSale(data: SaleType) {
       validUntil,
     } = data;
 
+    const generatedSlug = title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, "")
+      .replace(/\s+/g, "-");
+
     await prisma.sale.create({
       data: {
         couponCode,
         description,
         discountAmount,
         discountBadge,
+        slug: generatedSlug,
         imageUrl,
         isActive,
         title,
@@ -101,6 +107,94 @@ export async function searchSale(
       success: true,
       sales,
       count: sales.length,
+    };
+  } catch (err) {
+    console.log(err);
+    return { error: "Internal Server Error" };
+  }
+}
+
+export async function updateSale(data: SaleType) {
+  try {
+    const sale = await prisma.sale.findUnique({
+      where: { id: data.id },
+    });
+
+    if (!sale) {
+      return { error: "Sale not found" };
+    }
+
+    const generatedSlug = data.title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, "")
+      .replace(/\s+/g, "-");
+
+    const updatedSale = await prisma.sale.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        title: data.title,
+        description: data.description,
+        discountBadge: data.discountBadge,
+        discountAmount: data.discountAmount,
+        couponCode: data.couponCode,
+        slug: generatedSlug,
+        validFrom: data.validFrom,
+        validUntil: data.validUntil,
+        isActive: data.isActive,
+        imageUrl: data.imageUrl,
+      },
+    });
+
+    return {
+      success: true,
+      message: "Sale updated successfully",
+      sale: updatedSale,
+    };
+  } catch (err) {
+    console.log(err);
+    return { error: "Internal Server Error" };
+  }
+}
+
+export async function getSale(slug: string) {
+  try {
+    const sale = await prisma.sale.findFirst({
+      where: {
+        slug,
+      },
+    });
+
+    return {
+      success: true,
+      sale,
+    };
+  } catch (err) {
+    console.error(err);
+    return { error: "Internal Server Error" };
+  }
+}
+
+export async function deleteSale(saleId: string) {
+  try {
+    const sale = await prisma.sale.findUnique({
+      where: { id: saleId },
+    });
+
+    if (!sale) {
+      return { error: "Sale not found" };
+    }
+
+    await prisma.sale.delete({
+      where: {
+        id: saleId,
+      },
+    });
+
+    return {
+      success: true,
+      message: "Sale deleted successfully",
     };
   } catch (err) {
     console.log(err);

@@ -1,9 +1,12 @@
 import {
+  deleteCategory,
   getAllCategories,
   getCategoryProductCount,
   searchCategory,
+  updateCategory,
 } from "@/actions/category-actions";
-import { useQuery } from "@tanstack/react-query";
+import { CategoryType } from "@/types/schema";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useCategories() {
   return useQuery({
@@ -48,5 +51,41 @@ export function useSearchCategories(
     enabled: options?.enabled ?? searchTerm.trim().length > 0,
     staleTime: 30000,
     refetchOnWindowFocus: false,
+  });
+}
+
+export function useUpdateCategory() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: CategoryType) => {
+      const result = await updateCategory(data);
+      if (result.error) {
+        throw new Error(result.error);
+      }
+      return result;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+      queryClient.invalidateQueries({ queryKey: ["search-categories"] });
+    },
+  });
+}
+
+export function useDeleteCategory() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (categoryId: string) => {
+      const result = await deleteCategory(categoryId);
+      if (result.error) {
+        throw new Error(result.error);
+      }
+      return result;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+      queryClient.invalidateQueries({ queryKey: ["search-categories"] });
+      queryClient.invalidateQueries({ queryKey: ["category-product-count"] });
+    },
   });
 }

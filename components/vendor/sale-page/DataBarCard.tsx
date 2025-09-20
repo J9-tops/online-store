@@ -9,7 +9,10 @@ type Props = {
 
 const SaleCard = ({ sale }: Props) => {
   return (
-    <div className="bg-white cursor-pointer rounded-lg border border-gray-200 shadow-md overflow-hidden hover:shadow-lg transition-shadow w-full flex gap-3 py-2 px-3 relative">
+    <a
+      href={`/vendor/sale/${sale.slug}`}
+      className="bg-white cursor-pointer rounded-lg border border-gray-200 shadow-md overflow-hidden hover:shadow-lg transition-shadow w-full flex gap-3 py-2 px-3 relative"
+    >
       <div className="p-1 border border-gray-200 rounded-sm w-fit h-fit my-auto">
         <Image alt={sale.title} src={sale.imageUrl} width={40} height={40} />
       </div>
@@ -26,7 +29,7 @@ const SaleCard = ({ sale }: Props) => {
           {sale.isActive ? "Active" : "Inactive"}
         </span>
       </div>
-    </div>
+    </a>
   );
 };
 

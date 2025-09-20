@@ -15,28 +15,34 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import useFileUpload from "@/hooks/useFileUpload";
 import { cn } from "@/lib/utils";
-import { saleConfig } from "@/types/config";
+import { useDeleteSale, useUpdateSale } from "@/services/sale";
 import { SaleSchema, SaleType } from "@/types/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import Image from "next/image";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { SlCalender } from "react-icons/sl";
 import { toast } from "react-toastify";
-import { createSale } from "../../../actions/sale-action";
 
-export default function FormWrapper() {
-  const [title, setTitle] = useState(saleConfig.defaultValues.title);
+type Props = {
+  sale: SaleType;
+};
+
+export default function FormWrapper({ sale }: Props) {
+  const [title, setTitle] = useState(sale.title);
   const [submitting, setSubmitting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const { register, handleSubmit, setValue, watch, reset } = useForm<SaleType>({
     resolver: zodResolver(SaleSchema),
-    defaultValues: saleConfig.defaultValues,
+    defaultValues: sale,
   });
 
   const validFromValue = watch("validFrom");
   const validUntilValue = watch("validUntil");
+  const isActiveValue = watch("isActive");
 
   const {
     handleFileUpload,
@@ -48,20 +54,58 @@ export default function FormWrapper() {
     setImageURL,
   } = useFileUpload((url) => setValue("imageUrl", url));
 
+  // Set initial imageURL from sale data
+  useEffect(() => {
+    if (sale.imageUrl && !imageURL) {
+      setImageURL(sale.imageUrl);
+    }
+  }, [sale.imageUrl, imageURL, setImageURL]);
+
+  const router = useRouter();
+  const { mutateAsync: update } = useUpdateSale();
+  const { mutateAsync: deleteSale } = useDeleteSale();
+
   const onSubmit = async (data: SaleType) => {
     setSubmitting(true);
+    try {
+      const formattedData = {
+        ...data,
+        validFrom: new Date(data.validFrom),
+        validUntil: new Date(data.validUntil),
+        discountAmount: Number(data.discountAmount),
+        imageUrl: imageURL || data.imageUrl, // Use imageURL from hook
+      };
 
-    const response = await createSale(data);
+      const response = await update(formattedData);
+      if (data.title !== sale.title) {
+        const updatedSlug = response.sale?.slug || data.slug;
+        router.replace(`/vendor/sale/${updatedSlug}`);
+      } else {
+        router.refresh();
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Failed to update sale");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
-    if (response.success) {
-      toast(response.message);
-      setSubmitting(false);
-      reset();
-      setImageURL("");
-      setTitle(saleConfig.defaultValues.title);
-    } else {
-      toast(response.message);
-      setSubmitting(false);
+  const onDelete = async (data: SaleType) => {
+    if (!data.id) return;
+
+    setDeleting(true);
+    try {
+      const response = await deleteSale(data.id);
+      if (response.success) {
+        toast.success(response.message);
+        router.replace("/vendor/sale");
+      } else {
+        toast.error(response.message || "Failed to delete sale");
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Failed to delete sale");
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -183,7 +227,14 @@ export default function FormWrapper() {
         </div>
         <div className="space-x-2 flex items-center">
           <Label htmlFor="isActive">Is Active</Label>
-          <Checkbox id="isActive" {...register("isActive")} className="m-0" />
+          <Checkbox
+            id="isActive"
+            checked={isActiveValue}
+            onCheckedChange={(checked) =>
+              setValue("isActive", checked as boolean)
+            }
+            className="m-0"
+          />
         </div>
         <div className="space-y-2 flex flex-col">
           <Label htmlFor="imageUrl">Sale Image</Label>
@@ -203,7 +254,7 @@ export default function FormWrapper() {
           {status === "uploading" && (
             <ProgressBar prev={0} current={progress} />
           )}
-          {progress === 100 && imageURL !== "" && (
+          {imageURL && (
             <Image
               src={imageURL}
               alt="uploaded image"
@@ -215,15 +266,27 @@ export default function FormWrapper() {
           )}
         </div>
       </form>
-      <div className="sticky w-full bg-white p-4 bottom-0 left-0 right-0 border-t shadow-xl">
+      <div className="sticky w-full bg-white p-4 space-x-4 bottom-0 left-0 right-0 border-t shadow-xl">
         <Button
+          id="form"
           type="submit"
           className="w-fit"
           form="form"
           disabled={submitting}
         >
-          {submitting ? "Publishing..." : "Publish"}
+          {submitting ? "Updating..." : "Update"}
         </Button>
+        {sale.id && (
+          <Button
+            type="button"
+            className="w-fit"
+            variant="destructive"
+            disabled={deleting}
+            onClick={() => onDelete(sale)}
+          >
+            {deleting ? "Deleting..." : "Delete"}
+          </Button>
+        )}
       </div>
     </Container>
   );

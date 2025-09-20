@@ -12,7 +12,10 @@ const CategoryCard = ({ category }: Props) => {
   const { data: count, isLoading } = useCategoryProductCount(category.slug);
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 py-1 shadow-md overflow-hidden hover:shadow-lg transition-shadow w-full flex gap-3 px-2">
+    <a
+      href={`/vendor/category/${category.slug}`}
+      className="bg-white cursor-pointer rounded-lg border border-gray-200 py-1 shadow-md overflow-hidden hover:shadow-lg transition-shadow w-full flex gap-3 px-2"
+    >
       <div className="p-1 border border-gray-500 rounded-sm w-fit my-auto">
         <Tag size={16} className="text-gray-500" />
       </div>
@@ -30,7 +33,7 @@ const CategoryCard = ({ category }: Props) => {
           </span>
         </div>
       </div>
-    </div>
+    </a>
   );
 };
 

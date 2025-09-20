@@ -28,6 +28,7 @@ enum UserRole {
 model Sale {
   id             String   @id @default(cuid())
   title          String
+  slug            String
   description    String
   discountBadge  String
   discountAmount Float
@@ -37,8 +38,7 @@ model Sale {
   isActive       Boolean
   imageUrl       String
 
-  @@unique([title, description])
-  @@index([title])
+  @@unique([title])
 }
 
 model Product {
@@ -54,8 +54,7 @@ model Product {
 
   categories Category[]
 
-  @@unique([title, description])
-  @@index([title])
+  @@unique([slug])
 }
 
 model Category {
@@ -65,8 +64,7 @@ model Category {
   description String
   products    Product[]
 
-  @@unique([title, description])
-  @@index([title])
+  @@unique([slug])
 }
 
 model User {

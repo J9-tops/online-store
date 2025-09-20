@@ -123,3 +123,89 @@ export async function searchCategory(
     return { error: "Internal Server Error" };
   }
 }
+
+export async function updateCategory(data: CategoryType) {
+  try {
+    const category = await prisma.category.findUnique({
+      where: { id: data.id },
+    });
+
+    if (!category) {
+      return { error: "Category not found" };
+    }
+
+    const updatedCategory = await prisma.category.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        title: data.title,
+        description: data.description,
+        slug: data.slug,
+      },
+    });
+
+    return {
+      success: true,
+      message: "Category updated successfully",
+      category: updatedCategory,
+    };
+  } catch (err) {
+    console.log(err);
+    return { error: "Internal Server Error" };
+  }
+}
+
+export async function getCategory(slug: string) {
+  try {
+    const category = await prisma.category.findUnique({
+      where: {
+        slug,
+      },
+    });
+
+    return {
+      success: true,
+      category,
+    };
+  } catch (err) {
+    console.error(err);
+    return { error: "Internal Server Error" };
+  }
+}
+
+export async function deleteCategory(categoryId: string) {
+  try {
+    const category = await prisma.category.findUnique({
+      where: { id: categoryId },
+      include: {
+        products: true,
+      },
+    });
+
+    if (!category) {
+      return { error: "Category not found" };
+    }
+
+    if (category.products && category.products.length > 0) {
+      return {
+        error:
+          "Cannot delete category with associated products. Please remove or reassign products first.",
+      };
+    }
+
+    await prisma.category.delete({
+      where: {
+        id: categoryId,
+      },
+    });
+
+    return {
+      success: true,
+      message: "Category deleted successfully",
+    };
+  } catch (err) {
+    console.log(err);
+    return { error: "Internal Server Error" };
+  }
+}
