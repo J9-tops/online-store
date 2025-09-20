@@ -1,9 +1,15 @@
-import { getProducts, searchProduct } from "@/actions/product-actions";
-import { useQuery } from "@tanstack/react-query";
+import {
+  deleteProduct,
+  getProducts,
+  searchProduct,
+  updateProduct,
+} from "@/actions/product-actions";
+import { ProductType } from "@/types/schema";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useProducts() {
   return useQuery({
-    queryKey: ["Products"],
+    queryKey: ["products"],
     queryFn: async () => {
       const result = await getProducts();
       if (result.error) {
@@ -30,5 +36,40 @@ export function useSearchProducts(
     enabled: options?.enabled ?? searchTerm.trim().length > 0,
     staleTime: 30000,
     refetchOnWindowFocus: false,
+  });
+}
+
+export function useUpdateProduct() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: ProductType) => {
+      const result = await updateProduct(data);
+      if (result.error) {
+        throw new Error(result.error);
+      }
+      return result;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["search-products"] });
+    },
+  });
+}
+
+export function useDeleteProduct() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (productId: string) => {
+      const result = await deleteProduct(productId);
+      if (result.error) {
+        throw new Error(result.error);
+      }
+      return result;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["search-products"] });
+    },
   });
 }

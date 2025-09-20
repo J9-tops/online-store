@@ -1,6 +1,5 @@
 "use client";
 
-import { createProduct } from "@/actions/product-actions";
 import Container from "@/components/Container";
 import ProgressBar from "@/components/ProgressBar";
 import { Button } from "@/components/ui/button";
@@ -10,12 +9,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import useFileUpload from "@/hooks/useFileUpload";
-import { productConfig } from "@/types/config";
+import { useDeleteProduct, useUpdateProduct } from "@/services/product";
 import { productSchema, ProductType } from "@/types/schema";
 import { CategoryType } from "@/types/vendor";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -26,27 +26,33 @@ const statusOptions = [
 ];
 
 interface FormWrapperProps {
-  categories: CategoryType[];
+  product: ProductType;
 }
 
-export default function FormWrapper({ categories = [] }: FormWrapperProps) {
-  const [title, setTitle] = useState(productConfig.defaultValues.title);
+export default function FormWrapper({ product }: FormWrapperProps) {
+  const [title, setTitle] = useState(product.title);
   const [submitting, setSubmitting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const [categoriesList] = useState<CategoryType[]>(
-    categories.filter((cat): cat is CategoryType & { id: string } => !!cat.id)
+    product.categories.filter(
+      (cat): cat is CategoryType & { id: string } => !!cat.id
+    )
   );
   const [selectedCategories, setSelectedCategories] = useState<CategoryType[]>(
-    []
+    (product.categories || []).filter(
+      (cat): cat is CategoryType & { id: string } => typeof cat.id === "string"
+    )
   );
   const [selectedStatus, setSelectedStatus] = useState<"Hot" | "New" | "Sale">(
-    "New"
+    product.status || "New"
   );
 
-  const { register, handleSubmit, setValue, reset } = useForm<ProductType>({
-    resolver: zodResolver(productSchema),
-    defaultValues: productConfig.defaultValues,
-  });
+  const { register, handleSubmit, setValue, watch, reset } =
+    useForm<ProductType>({
+      resolver: zodResolver(productSchema),
+      defaultValues: product,
+    });
 
   const {
     handleFileUpload,
@@ -57,6 +63,16 @@ export default function FormWrapper({ categories = [] }: FormWrapperProps) {
     setStatus,
     setImageURL,
   } = useFileUpload((url) => setValue("imageUrl", url));
+
+  useEffect(() => {
+    if (product.imageUrl && !imageURL) {
+      setImageURL(product.imageUrl);
+    }
+  }, [product.imageUrl, imageURL, setImageURL]);
+
+  const router = useRouter();
+  const { mutateAsync: update } = useUpdateProduct();
+  const { mutateAsync: deleteProduct } = useDeleteProduct();
 
   const generateSlug = () => {
     const generatedSlug = title
@@ -82,24 +98,45 @@ export default function FormWrapper({ categories = [] }: FormWrapperProps) {
 
   const onSubmit = async (data: ProductType) => {
     setSubmitting(true);
+    try {
+      const formattedData: ProductType = {
+        ...data,
+        price: Number(data.price),
+        stock: Number(data.stock),
+        categories: selectedCategories,
+        imageUrl: imageURL || data.imageUrl,
+      };
 
-    const formData = {
-      ...data,
-      categories: selectedCategories,
-    };
-
-    const response = await createProduct(formData);
-
-    if (response.success) {
+      const response = await update(formattedData);
+      if (data.title !== product.title) {
+        const updatedSlug = response.product?.slug || data.slug;
+        router.replace(`/vendor/product/${updatedSlug}`);
+      } else {
+        router.refresh();
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Failed to update product");
+    } finally {
       setSubmitting(false);
-      toast.success(response.message);
-      reset();
-      setTitle(productConfig.defaultValues.title);
-      setImageURL("");
-      setSelectedCategories([]);
-    } else {
-      setSubmitting(false);
-      toast.error(response.message);
+    }
+  };
+
+  const onDelete = async (data: ProductType) => {
+    if (!data.id) return;
+
+    setDeleting(true);
+    try {
+      const response = await deleteProduct(data.id);
+      if (response.success) {
+        toast.success(response.message);
+        router.replace("/vendor/product");
+      } else {
+        toast.error(response.message || "Failed to delete product");
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Failed to delete product");
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -112,9 +149,9 @@ export default function FormWrapper({ categories = [] }: FormWrapperProps) {
         </h1>
       </div>
       <form
+        id="form"
         onSubmit={handleSubmit(onSubmit)}
         className="lg:w-[80%] my-5 flex flex-col gap-5 grow"
-        id="product-form"
       >
         <div className="space-y-2 flex flex-col">
           <Label htmlFor="title">Product Name</Label>
@@ -204,7 +241,7 @@ export default function FormWrapper({ categories = [] }: FormWrapperProps) {
           {status === "uploading" && (
             <ProgressBar prev={0} current={progress} />
           )}
-          {progress === 100 && imageURL !== "" && (
+          {imageURL && (
             <Image
               src={imageURL}
               alt="uploaded image"
@@ -216,15 +253,27 @@ export default function FormWrapper({ categories = [] }: FormWrapperProps) {
           )}
         </div>
       </form>
-      <div className="sticky w-full bg-white p-4 bottom-0 left-0 right-0 border-t shadow-xl">
+      <div className="sticky w-full bg-white p-4 space-x-4 bottom-0 left-0 right-0 border-t shadow-xl">
         <Button
+          id="form"
           type="submit"
           className="w-fit"
-          form="product-form"
+          form="form"
           disabled={submitting}
         >
-          {submitting ? "Publishing..." : "Publish"}
+          {submitting ? "Updating..." : "Update"}
         </Button>
+        {product.id && (
+          <Button
+            type="button"
+            className="w-fit"
+            variant="destructive"
+            disabled={deleting}
+            onClick={() => onDelete(product)}
+          >
+            {deleting ? "Deleting..." : "Delete"}
+          </Button>
+        )}
       </div>
     </Container>
   );

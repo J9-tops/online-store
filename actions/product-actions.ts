@@ -176,3 +176,112 @@ export async function searchProduct(
     return { error: "Internal Server Error" };
   }
 }
+
+export async function updateProduct(data: ProductType) {
+  try {
+    const product = await prisma.product.findUnique({
+      where: { id: data.id },
+    });
+
+    if (!product) {
+      return { error: "Product not found" };
+    }
+
+    const generatedSlug = data.title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, "")
+      .replace(/\s+/g, "-");
+
+    // Disconnect all existing categories first
+    await prisma.product.update({
+      where: { id: data.id },
+      data: {
+        categories: {
+          set: [], // This disconnects all categories
+        },
+      },
+    });
+
+    // Now update the product with new data and categories
+    const updatedProduct = await prisma.product.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        title: data.title,
+        description: data.description,
+        label: data.label,
+        price: data.price,
+        stock: data.stock,
+        status: data.status,
+        slug: generatedSlug,
+        imageUrl: data.imageUrl,
+        categories: {
+          connect: data.categories.map((category) => ({
+            id: category.id,
+            slug: category.slug,
+          })),
+        },
+      },
+      include: {
+        categories: true,
+      },
+    });
+
+    return {
+      success: true,
+      message: "Product updated successfully",
+      product: updatedProduct,
+    };
+  } catch (err) {
+    console.log(err);
+    return { error: "Internal Server Error" };
+  }
+}
+
+export async function getProduct(slug: string) {
+  try {
+    const product = await prisma.product.findFirst({
+      where: {
+        slug,
+      },
+      include: {
+        categories: true,
+      },
+    });
+
+    return {
+      success: true,
+      product,
+    };
+  } catch (err) {
+    console.error(err);
+    return { error: "Internal Server Error" };
+  }
+}
+
+export async function deleteProduct(productId: string) {
+  try {
+    const product = await prisma.product.findUnique({
+      where: { id: productId },
+    });
+
+    if (!product) {
+      return { error: "Product not found" };
+    }
+
+    await prisma.product.delete({
+      where: {
+        id: productId,
+      },
+    });
+
+    return {
+      success: true,
+      message: "Product deleted successfully",
+    };
+  } catch (err) {
+    console.log(err);
+    return { error: "Internal Server Error" };
+  }
+}
