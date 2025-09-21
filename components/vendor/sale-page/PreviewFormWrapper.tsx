@@ -54,7 +54,6 @@ export default function FormWrapper({ sale }: Props) {
     setImageURL,
   } = useFileUpload((url) => setValue("imageUrl", url));
 
-  // Set initial imageURL from sale data
   useEffect(() => {
     if (sale.imageUrl && !imageURL) {
       setImageURL(sale.imageUrl);
@@ -73,7 +72,7 @@ export default function FormWrapper({ sale }: Props) {
         validFrom: new Date(data.validFrom),
         validUntil: new Date(data.validUntil),
         discountAmount: Number(data.discountAmount),
-        imageUrl: imageURL || data.imageUrl, // Use imageURL from hook
+        imageUrl: imageURL || data.imageUrl,
       };
 
       const response = await update(formattedData);

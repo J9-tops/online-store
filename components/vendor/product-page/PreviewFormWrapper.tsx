@@ -113,6 +113,7 @@ export default function FormWrapper({ product }: FormWrapperProps) {
       } else {
         router.refresh();
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.message || "Failed to update product");
     } finally {
@@ -132,6 +133,7 @@ export default function FormWrapper({ product }: FormWrapperProps) {
       } else {
         toast.error(response.message || "Failed to delete product");
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.message || "Failed to delete product");
     } finally {
