@@ -18,7 +18,7 @@ type Props = {
 };
 
 export default function PreviewFormWrapper({ category }: Props) {
-  const { handleSubmit, register, setValue, reset } = useForm<CategoryType>({
+  const { handleSubmit, register, setValue } = useForm<CategoryType>({
     resolver: zodResolver(categorySchema),
     defaultValues: category,
   });

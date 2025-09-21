@@ -46,6 +46,7 @@ import {
   Shield,
   User,
 } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -67,11 +68,16 @@ type UserType = {
 const AdminUserDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState<UserRole | "All">("All");
-
+  const router = useRouter();
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const shouldSearch =
     debouncedSearchTerm.trim().length > 0 || roleFilter !== "All";
+
+  const logout = () => {
+    signOut();
+    router.replace("/");
+  };
 
   const {
     data: allUsers = [],
@@ -136,7 +142,7 @@ const AdminUserDashboard = () => {
         banExpires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
       });
       toast.success(`${user.name} has been banned successfully.`);
-    } catch (error) {
+    } catch {
       toast.error("Failed to ban user. Please try again.");
     }
   };
@@ -148,7 +154,7 @@ const AdminUserDashboard = () => {
         banned: false,
       });
       toast.success(`${user.name} has been unbanned successfully.`);
-    } catch (error) {
+    } catch {
       toast.error("Failed to unban user. Please try again.");
     }
   };
@@ -169,12 +175,6 @@ const AdminUserDashboard = () => {
       </div>
     );
   }
-  const router = useRouter();
-
-  const logout = () => {
-    signOut();
-    router.replace("/");
-  };
 
   return (
     <div className="min-h-screen bg-gray-50/40">
@@ -182,11 +182,11 @@ const AdminUserDashboard = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div>
-              <a href="/">
+              <Link href="/">
                 <h1 className="text-3xl font-bold tracking-tight">
                   AccessMart Admin
                 </h1>
-              </a>
+              </Link>
               <p className="text-muted-foreground">
                 Manage and monitor user accounts across your platform
               </p>

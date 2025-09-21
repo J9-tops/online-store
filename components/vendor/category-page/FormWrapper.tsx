@@ -22,7 +22,7 @@ export default function FormWrapper() {
   const [title, setTitle] = useState(categoryConfig.defaultValues.title);
   const [submitting, setSubmitting] = useState(false);
 
-  const [categoriesList, setCategoryList] = useState<CategoryType[]>([]);
+  // const [categoriesList, setCategoryList] = useState<CategoryType[]>([]);
 
   const generateSlug = () => {
     const generatedSlug = title

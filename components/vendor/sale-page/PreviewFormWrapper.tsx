@@ -35,7 +35,7 @@ export default function FormWrapper({ sale }: Props) {
   const [submitting, setSubmitting] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  const { register, handleSubmit, setValue, watch, reset } = useForm<SaleType>({
+  const { register, handleSubmit, setValue, watch } = useForm<SaleType>({
     resolver: zodResolver(SaleSchema),
     defaultValues: sale,
   });
@@ -83,6 +83,7 @@ export default function FormWrapper({ sale }: Props) {
       } else {
         router.refresh();
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.message || "Failed to update sale");
     } finally {
@@ -102,6 +103,7 @@ export default function FormWrapper({ sale }: Props) {
       } else {
         toast.error(response.message || "Failed to delete sale");
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error.message || "Failed to delete sale");
     } finally {

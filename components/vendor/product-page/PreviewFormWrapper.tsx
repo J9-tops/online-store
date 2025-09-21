@@ -10,8 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import useFileUpload from "@/hooks/useFileUpload";
 import { useDeleteProduct, useUpdateProduct } from "@/services/product";
-import { productSchema, ProductType } from "@/types/schema";
-import { CategoryType } from "@/types/vendor";
+import { CategoryType, productSchema, ProductType } from "@/types/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -34,11 +33,12 @@ export default function FormWrapper({ product }: FormWrapperProps) {
   const [submitting, setSubmitting] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  const [categoriesList] = useState<CategoryType[]>(
+  const [categoriesList] = useState<(CategoryType & { id: string })[]>(
     product.categories.filter(
-      (cat): cat is CategoryType & { id: string } => !!cat.id
+      (cat): cat is CategoryType & { id: string } => typeof cat.id === "string"
     )
   );
+
   const [selectedCategories, setSelectedCategories] = useState<CategoryType[]>(
     (product.categories || []).filter(
       (cat): cat is CategoryType & { id: string } => typeof cat.id === "string"
@@ -48,11 +48,10 @@ export default function FormWrapper({ product }: FormWrapperProps) {
     product.status || "New"
   );
 
-  const { register, handleSubmit, setValue, watch, reset } =
-    useForm<ProductType>({
-      resolver: zodResolver(productSchema),
-      defaultValues: product,
-    });
+  const { register, handleSubmit, setValue } = useForm<ProductType>({
+    resolver: zodResolver(productSchema),
+    defaultValues: product,
+  });
 
   const {
     handleFileUpload,

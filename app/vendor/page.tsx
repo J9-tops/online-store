@@ -11,7 +11,6 @@ import {
 import Link from "next/link";
 
 const Page = () => {
-  // Mock data - in real app, this would come from your API
   const stats = {
     totalProducts: 45,
     totalOrders: 128,
@@ -71,17 +70,16 @@ const Page = () => {
   return (
     <div className="h-screen bg-gray-50 p-6 !overflow-y-auto custom-scrollbar">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Vendor Dashboard
           </h1>
           <p className="text-gray-600">
-            Welcome back! Here's what's happening with your store today.
+            Welcome back! Here&apos;s what&apos;s happening with your store
+            today.
           </p>
         </div>
 
-        {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-lg shadow-sm border p-6">
             <div className="flex items-center justify-between">
@@ -145,7 +143,6 @@ const Page = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Quick Actions */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-lg shadow-sm border p-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6">
@@ -180,10 +177,9 @@ const Page = () => {
               </div>
             </div>
 
-            {/* Today's Highlights */}
             <div className="bg-white rounded-lg shadow-sm border p-6 mt-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6">
-                Today's Highlights
+                Today&apos;s Highlights
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex items-center space-x-3 p-4 bg-green-50 rounded-lg">
@@ -192,7 +188,7 @@ const Page = () => {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-600">
-                      Today's Sales
+                      Today&apos;s Sales
                     </p>
                     <p className="text-xl font-bold text-gray-900">
                       ${stats.todaysSales}
@@ -216,7 +212,6 @@ const Page = () => {
             </div>
           </div>
 
-          {/* Recent Orders */}
           <div className="bg-white rounded-lg shadow-sm border p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-gray-900">
@@ -256,7 +251,6 @@ const Page = () => {
           </div>
         </div>
 
-        {/* Footer CTA */}
         <div className="mt-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg p-6 text-white">
           <div className="flex items-center justify-between">
             <div>
