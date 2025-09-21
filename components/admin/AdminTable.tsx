@@ -26,101 +26,72 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useDebounce } from "@/hooks/useDebounce";
+import { signOut } from "@/lib/auth-client";
+import {
+  useSearchUsers,
+  useUpdateUserBanStatus,
+  useUsers,
+} from "@/services/users";
+import { maskString } from "@/utils";
+import { UserRole } from "@prisma/client";
 import {
   Ban,
   Calendar,
   Filter,
+  Loader2,
   Mail,
   MoreVertical,
   Search,
   Shield,
   User,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-toastify";
+
+type UserType = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  name: string;
+  email: string;
+  emailVerified: boolean;
+  image: string | null;
+  role: UserRole;
+  banned: boolean | null;
+  banReason: string | null;
+  banExpires: Date | null;
+};
 
 const AdminUserDashboard = () => {
-  const [users] = useState([
-    {
-      id: "clx123abc",
-      createdAt: new Date("2024-01-15T10:30:00Z"),
-      updatedAt: new Date("2024-09-15T14:22:00Z"),
-      name: "John Doe",
-      email: "john.doe@example.com",
-      emailVerified: true,
-      image:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face",
-      role: "User",
-      banned: false,
-      banReason: null,
-      banExpires: null,
-    },
-    {
-      id: "clx456def",
-      createdAt: new Date("2024-02-20T08:15:00Z"),
-      updatedAt: new Date("2024-09-18T09:45:00Z"),
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      emailVerified: true,
-      image:
-        "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop&crop=face",
-      role: "Admin",
-      banned: false,
-      banReason: null,
-      banExpires: null,
-    },
-    {
-      id: "clx789ghi",
-      createdAt: new Date("2024-03-10T16:45:00Z"),
-      updatedAt: new Date("2024-09-12T11:30:00Z"),
-      name: "Mike Johnson",
-      email: "mike.johnson@example.com",
-      emailVerified: false,
-      image: null,
-      role: "Vendor",
-      banned: false,
-      banReason: null,
-      banExpires: null,
-    },
-    {
-      id: "clx012jkl",
-      createdAt: new Date("2024-04-05T12:20:00Z"),
-      updatedAt: new Date("2024-09-10T16:15:00Z"),
-      name: "Sarah Wilson",
-      email: "sarah.wilson@example.com",
-      emailVerified: true,
-      image:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face",
-      role: "User",
-      banned: true,
-      banReason: "Violation of terms of service",
-      banExpires: new Date("2024-12-01T00:00:00Z"),
-    },
-    {
-      id: "clx345mno",
-      createdAt: new Date("2024-05-12T09:10:00Z"),
-      updatedAt: new Date("2024-09-19T13:55:00Z"),
-      name: "David Brown",
-      email: "david.brown@example.com",
-      emailVerified: true,
-      image:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face",
-      role: "User",
-      banned: false,
-      banReason: null,
-      banExpires: null,
-    },
-  ]);
-
   const [searchTerm, setSearchTerm] = useState("");
-  const [roleFilter, setRoleFilter] = useState("All");
+  const [roleFilter, setRoleFilter] = useState<UserRole | "All">("All");
 
-  const filteredUsers = users.filter((user) => {
-    const matchesSearch =
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesRole = roleFilter === "All" || user.role === roleFilter;
-    return matchesSearch && matchesRole;
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
+  const shouldSearch =
+    debouncedSearchTerm.trim().length > 0 || roleFilter !== "All";
+
+  const {
+    data: allUsers = [],
+    isLoading: allUsersLoading,
+    error: allUsersError,
+  } = useUsers();
+
+  const {
+    data: searchResults = [],
+    isLoading: searchLoading,
+    error: searchError,
+  } = useSearchUsers(debouncedSearchTerm, roleFilter, {
+    enabled: shouldSearch,
   });
+
+  const updateBanStatusMutation = useUpdateUserBanStatus();
+
+  const users = shouldSearch ? searchResults : allUsers;
+  const isLoading = shouldSearch ? searchLoading : allUsersLoading;
+  const error = shouldSearch ? searchError : allUsersError;
 
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat("en-US", {
@@ -129,10 +100,10 @@ const AdminUserDashboard = () => {
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-    }).format(date);
+    }).format(new Date(date));
   };
 
-  const getRoleIcon = (role: string) => {
+  const getRoleIcon = (role: UserRole) => {
     switch (role) {
       case "Admin":
         return <Shield className="w-4 h-4 text-purple-600" />;
@@ -144,7 +115,7 @@ const AdminUserDashboard = () => {
   };
 
   const getRoleBadgeVariant = (
-    role: string
+    role: UserRole
   ): "default" | "secondary" | "destructive" | "outline" => {
     switch (role) {
       case "Admin":
@@ -156,22 +127,80 @@ const AdminUserDashboard = () => {
     }
   };
 
+  const handleBanUser = async (user: UserType) => {
+    try {
+      await updateBanStatusMutation.mutateAsync({
+        userId: user.id,
+        banned: true,
+        banReason: "Administrative action",
+        banExpires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      });
+      toast.success(`${user.name} has been banned successfully.`);
+    } catch (error) {
+      toast.error("Failed to ban user. Please try again.");
+    }
+  };
+
+  const handleUnbanUser = async (user: UserType) => {
+    try {
+      await updateBanStatusMutation.mutateAsync({
+        userId: user.id,
+        banned: false,
+      });
+      toast.success(`${user.name} has been unbanned successfully.`);
+    } catch (error) {
+      toast.error("Failed to unban user. Please try again.");
+    }
+  };
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50/40 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-lg font-semibold text-red-600">
+            Error loading users
+          </h2>
+          <p className="text-sm text-muted-foreground mt-2">
+            {error instanceof Error
+              ? error.message
+              : "An unexpected error occurred"}
+          </p>
+        </div>
+      </div>
+    );
+  }
+  const router = useRouter();
+
+  const logout = () => {
+    signOut();
+    router.replace("/");
+  };
+
   return (
     <div className="min-h-screen bg-gray-50/40">
       <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div>
-              <h1 className="text-3xl font-bold tracking-tight">
-                User Management
-              </h1>
+              <a href="/">
+                <h1 className="text-3xl font-bold tracking-tight">
+                  AccessMart Admin
+                </h1>
+              </a>
               <p className="text-muted-foreground">
                 Manage and monitor user accounts across your platform
               </p>
             </div>
             <Badge variant="outline" className="text-sm">
-              Total Users: {users.length}
+              Total Users: {isLoading ? "..." : users.length}
             </Badge>
+            <Button
+              onClick={logout}
+              variant="destructive"
+              className="py-1 px-2"
+            >
+              Logout
+            </Button>
           </div>
         </div>
       </div>
@@ -191,7 +220,12 @@ const AdminUserDashboard = () => {
               </div>
 
               <div className="sm:w-48">
-                <Select value={roleFilter} onValueChange={setRoleFilter}>
+                <Select
+                  value={roleFilter}
+                  onValueChange={(value: UserRole | "All") =>
+                    setRoleFilter(value)
+                  }
+                >
                   <SelectTrigger>
                     <Filter className="w-4 h-4 mr-2" />
                     <SelectValue placeholder="Filter by role" />
@@ -209,119 +243,139 @@ const AdminUserDashboard = () => {
         </Card>
 
         <Card>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>User</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Email Status</TableHead>
-                <TableHead>Account Status</TableHead>
-                <TableHead>Created</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredUsers.map((user) => (
-                <TableRow key={user.id}>
-                  <TableCell>
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-9 w-9">
-                        <AvatarImage src={user.image || ""} alt={user.name} />
-                        <AvatarFallback>
-                          {user.name
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="font-medium">{user.name}</div>
-                        <div className="text-sm text-muted-foreground">
-                          {user.email}
-                        </div>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      {getRoleIcon(user.role)}
-                      <Badge variant={getRoleBadgeVariant(user.role)}>
-                        {user.role}
-                      </Badge>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Mail className="w-4 h-4 text-muted-foreground" />
-                      <Badge
-                        variant={user.emailVerified ? "default" : "secondary"}
-                      >
-                        {user.emailVerified ? "Verified" : "Unverified"}
-                      </Badge>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    {user.banned ? (
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <Ban className="w-4 h-4 text-red-500" />
-                          <Badge variant="destructive">Banned</Badge>
-                        </div>
-                        {user.banReason && (
-                          <div className="text-sm text-muted-foreground">
-                            {user.banReason}
-                          </div>
-                        )}
-                        {user.banExpires && (
-                          <div className="text-sm text-muted-foreground">
-                            Until: {formatDate(user.banExpires)}
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      <Badge
-                        variant="outline"
-                        className="text-green-700 border-green-200 bg-green-50"
-                      >
-                        Active
-                      </Badge>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2 text-sm">
-                      <Calendar className="w-4 h-4 text-muted-foreground" />
-                      {formatDate(user.createdAt)}
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm">
-                          <MoreVertical className="w-4 h-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem>View Details</DropdownMenuItem>
-                        <DropdownMenuItem>Edit User</DropdownMenuItem>
-                        <DropdownMenuItem>Send Message</DropdownMenuItem>
-                        {user.banned ? (
-                          <DropdownMenuItem className="text-green-600">
-                            Unban User
-                          </DropdownMenuItem>
-                        ) : (
-                          <DropdownMenuItem className="text-red-600">
-                            Ban User
-                          </DropdownMenuItem>
-                        )}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
+          {isLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+              <span className="ml-2 text-muted-foreground">
+                Loading users...
+              </span>
+            </div>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>User</TableHead>
+                  <TableHead>Role</TableHead>
+                  <TableHead>Email Status</TableHead>
+                  <TableHead>Account Status</TableHead>
+                  <TableHead>Created</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {users.map((user: UserType) => (
+                  <TableRow key={user.id}>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-9 w-9">
+                          <AvatarImage src={user.image || ""} alt={user.name} />
+                          <AvatarFallback>
+                            {user.name
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <div className="font-medium">{user.name}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {maskString(user.email)}
+                          </div>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        {getRoleIcon(user.role)}
+                        <Badge variant={getRoleBadgeVariant(user.role)}>
+                          {user.role}
+                        </Badge>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <Mail className="w-4 h-4 text-muted-foreground" />
+                        <Badge
+                          variant={user.emailVerified ? "default" : "secondary"}
+                        >
+                          {user.emailVerified ? "Verified" : "Unverified"}
+                        </Badge>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      {user.banned ? (
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <Ban className="w-4 h-4 text-red-500" />
+                            <Badge variant="destructive">Banned</Badge>
+                          </div>
+                          {user.banReason && (
+                            <div className="text-sm text-muted-foreground">
+                              {user.banReason}
+                            </div>
+                          )}
+                          {user.banExpires && (
+                            <div className="text-sm text-muted-foreground">
+                              Until: {formatDate(user.banExpires)}
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <Badge
+                          variant="outline"
+                          className="text-green-700 border-green-200 bg-green-50"
+                        >
+                          Active
+                        </Badge>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Calendar className="w-4 h-4 text-muted-foreground" />
+                        {formatDate(user.createdAt)}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            disabled={updateBanStatusMutation.isPending}
+                          >
+                            {updateBanStatusMutation.isPending ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <MoreVertical className="w-4 h-4" />
+                            )}
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          {user.banned ? (
+                            <DropdownMenuItem
+                              className="text-green-600"
+                              onClick={() => handleUnbanUser(user)}
+                            >
+                              Unban User
+                            </DropdownMenuItem>
+                          ) : (
+                            <DropdownMenuItem
+                              className="text-red-600"
+                              onClick={() => handleBanUser(user)}
+                            >
+                              Ban User
+                            </DropdownMenuItem>
+                          )}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
 
-          {filteredUsers.length === 0 && (
+          {!isLoading && users.length === 0 && (
             <div className="text-center py-12">
               <User className="mx-auto h-12 w-12 text-muted-foreground" />
               <h3 className="mt-2 text-sm font-medium">No users found</h3>
