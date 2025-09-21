@@ -11,8 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import useFileUpload from "@/hooks/useFileUpload";
 import { productConfig } from "@/types/config";
-import { productSchema, ProductType } from "@/types/schema";
-import { CategoryType } from "@/types/vendor";
+import { CategoryType, productSchema, ProductType } from "@/types/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useState } from "react";
@@ -33,9 +32,10 @@ export default function FormWrapper({ categories = [] }: FormWrapperProps) {
   const [title, setTitle] = useState(productConfig.defaultValues.title);
   const [submitting, setSubmitting] = useState(false);
 
-  const [categoriesList] = useState<CategoryType[]>(
+  const [categoriesList] = useState<(CategoryType & { id: string })[]>(
     categories.filter((cat): cat is CategoryType & { id: string } => !!cat.id)
   );
+
   const [selectedCategories, setSelectedCategories] = useState<CategoryType[]>(
     []
   );

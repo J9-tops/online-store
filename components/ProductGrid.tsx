@@ -29,9 +29,7 @@ const ProductGrid = () => {
               key={product?.id}
               product={{
                 ...product,
-                categories: product.categories.map(
-                  (category) => category.title
-                ),
+                categories: product.categories,
               }}
             />
           </motion.div>
