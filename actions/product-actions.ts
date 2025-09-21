@@ -51,6 +51,9 @@ export async function getProductsBySlug(slug: string) {
           equals: slug,
         },
       },
+      include: {
+        categories: true,
+      },
     });
 
     return {
