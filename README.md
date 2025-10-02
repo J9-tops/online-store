@@ -18,9 +18,6 @@ This README explains how to run the project locally, required environment variab
 - Project structure
 - Authentication, email & uploads
 - Deployment tips
-- Troubleshooting
-- Contributing
-- Next steps
 
 ## Quick start
 
