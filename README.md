@@ -1,8 +1,3 @@
-<!--
-	README for online-store
-	A concise but thorough guide for contributors and maintainers.
--->
-
 # Online Store
 
 A full-stack e-commerce application built with Next.js (App Router), TypeScript, Tailwind CSS and Prisma (PostgreSQL). It provides product and category management, sales/coupons, user accounts with roles (Admin, Vendor, User), a shopping cart, and vendor/admin pages.
@@ -30,7 +25,7 @@ Prerequisites
 1. Install dependencies
 
 ```powershell
-cd C:\Users\USER\repos\online-store
+cd online-store
 pnpm install
 ```
 
