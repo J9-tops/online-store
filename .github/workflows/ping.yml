@@ -1,0 +1,23 @@
+name: Ping DB
+
+on:
+  schedule:
+    - cron: "0 8 * * 1,4"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm install -g ts-node typescript node-fetch
+      - run: ts-node ping.ts
+        env:
+          PING_URL: ${{ secrets.PING_URL }}
+          PING_KEY: ${{ secrets.PING_KEY }}
