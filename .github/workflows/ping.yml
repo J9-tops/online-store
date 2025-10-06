@@ -17,7 +17,7 @@ jobs:
           node-version: 20
 
       - run: npm install -g ts-node typescript node-fetch
-      - run: ts-node ping.ts
+      - run: npx ts-node-esm ping.ts
         env:
           PING_URL: ${{ secrets.PING_URL }}
           PING_KEY: ${{ secrets.PING_KEY }}
