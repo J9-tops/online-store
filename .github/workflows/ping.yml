@@ -16,7 +16,8 @@ jobs:
         with:
           node-version: 20
 
-      - run: npm install node-fetch dotenv
+      - run: npm install node-fetch dotenv --legacy-peer-deps
+
       - run: node ping.js
         env:
           PING_URL: ${{ secrets.PING_URL }}
