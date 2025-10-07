@@ -14,9 +14,11 @@ import { Label } from "@/components/ui/label";
 import { signIn } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { closeModal, switchMode } from "@/redux/features/modals";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { Spinner } from "./ui/spinner";
 
 export function LoginForm({
   className,
@@ -26,6 +28,8 @@ export function LoginForm({
   const handleSwitchMode = () => {
     dispatch(switchMode());
   };
+
+  const router = useRouter();
 
   async function handleSocialSignup() {
     await signIn.social({
@@ -38,6 +42,7 @@ export function LoginForm({
         },
       },
     });
+    router.refresh();
   }
 
   const [pending, setPending] = useState(false);
@@ -56,6 +61,7 @@ export function LoginForm({
     } else {
       dispatch(closeModal());
       setPending(false);
+      router.refresh();
     }
   };
 
@@ -116,8 +122,17 @@ export function LoginForm({
                     name="password"
                   />
                 </div>
-                <Button type="submit" className="w-full" disabled={pending}>
-                  Login
+                <Button
+                  type="submit"
+                  className="w-full flex items-center gap-2"
+                  disabled={pending}
+                >
+                  {pending && (
+                    <span>
+                      <Spinner />
+                    </span>
+                  )}
+                  <span>Login</span>
                 </Button>
               </div>
               <div className="text-center text-sm">

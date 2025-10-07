@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { Spinner } from "./ui/spinner";
 
 export function SignupForm({
   className,
@@ -122,8 +123,17 @@ export function SignupForm({
                     name="password"
                   />
                 </div>
-                <Button type="submit" className="w-full" disabled={pending}>
-                  Signup
+                <Button
+                  type="submit"
+                  className="w-full flex items-center gap-2"
+                  disabled={pending}
+                >
+                  {pending && (
+                    <span>
+                      <Spinner />
+                    </span>
+                  )}
+                  <span>Signup</span>
                 </Button>
               </div>
               <div className="text-center text-sm">

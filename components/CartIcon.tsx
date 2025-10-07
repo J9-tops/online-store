@@ -15,7 +15,7 @@ const CartIcon = () => {
   return (
     <Link
       href="/cart"
-      className="flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect"
+      className="flex h-[3.125rem] items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect"
     >
       <MdOutlineShoppingCart className="text-2xl text-darkBlue" />
       <div className="lg:flex flex-col hidden">

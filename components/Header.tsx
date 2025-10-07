@@ -10,6 +10,7 @@ import { RiAdminLine } from "react-icons/ri";
 import { auth } from "../lib/auth";
 import CartIcon from "./CartIcon";
 import ToggleMenu from "./ToggleMenu";
+import { UserName } from "./UserName";
 
 const Header = async () => {
   const headersList = await headers();
@@ -18,10 +19,8 @@ const Header = async () => {
     headers: headersList,
   });
 
-  console.log(session);
-
   return (
-    <header className="bg-white sticky top-0 z-50 border-b border-b-black py-1 text-black">
+    <header className="bg-white sticky top-0 z-50 border-b border-b-gray-300 py-1 text-black">
       <div className="w-full px-6">
         <div className="flex gap-2 justify-between items-center py-2 w-full">
           <div className="flex gap-3 items-center">
@@ -42,7 +41,7 @@ const Header = async () => {
             <input
               type="text"
               name="query"
-              placeholder="search for products"
+              placeholder="Search for products"
               className="bg-gray-50 text-gray-800 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 border border-gray-200 w-full max-w-4xl rounded-md hoverEffect"
             />
           </Form>
@@ -52,7 +51,7 @@ const Header = async () => {
             {session && session.user.role === "Admin" && (
               <Link
                 href={"/admin"}
-                className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect"
+                className="h-[3.125rem] flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect"
               >
                 <RiAdminLine className="text-2xl text-darkBlue" />
                 <p className="font-semibold flex-col hidden lg:flex">
@@ -64,7 +63,7 @@ const Header = async () => {
             {session && session.user.role === "Vendor" && (
               <Link
                 href={"/vendor"}
-                className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect"
+                className="h-[3.125rem] flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect"
               >
                 <HiOutlineDatabase className="text-2xl text-darkBlue" />
                 <p className="font-semibold hidden lg:block">Vendor Panel</p>
@@ -74,7 +73,7 @@ const Header = async () => {
             {session && session.user.role === "User" && (
               <Link
                 href={"/orders"}
-                className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect"
+                className="h-[3.125rem] flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect"
               >
                 <BsBasket className="text-2xl text-darkBlue" />
                 <div className="lg:flex flex-col hidden">
@@ -86,14 +85,7 @@ const Header = async () => {
               </Link>
             )}
 
-            {session && (
-              <div className="h-10 flex items-center text-sm gap-2 border border-gray-200 px-2 py-1 rounded-md shadow-md hover:shadow-none hoverEffect">
-                <div className="hidden lg:block capitalize">
-                  {session.user.name.split(" ")[0]}
-                </div>
-                <div className="lg:hidden"></div>
-              </div>
-            )}
+            {session && <UserName user={session.user} />}
             {!session && <LoginButton />}
           </div>
         </div>

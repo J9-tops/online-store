@@ -4,6 +4,7 @@ import { AuthModalWrapper } from "@/components/AuthModalWrapper";
 import { QueryProviders } from "@/components/QueryProvider";
 import React from "react";
 import { Provider } from "react-redux";
+import { ToastContainer } from "react-toastify";
 import { store } from "./store";
 
 const ReduxProvider = ({ children }: { children: React.ReactNode }) => {
@@ -12,6 +13,7 @@ const ReduxProvider = ({ children }: { children: React.ReactNode }) => {
       <QueryProviders>
         <AuthModalWrapper />
         {children}
+        <ToastContainer />
       </QueryProviders>
     </Provider>
   );
