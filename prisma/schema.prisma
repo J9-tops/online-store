@@ -81,28 +81,11 @@ model User {
   banReason     String?
   banExpires    DateTime?
 
-  sessions Session[]
   accounts Account[]
 
   @@map("users")
 }
 
-model Session {
-  id        String   @id @default(cuid())
-  createdAt DateTime
-  updatedAt DateTime
-
-  expiresAt      DateTime
-  token          String   @unique
-  ipAddress      String?
-  userAgent      String?
-  impersonatedBy String?
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("sessions")
-}
 
 model Account {
   id        String   @id @default(cuid())
