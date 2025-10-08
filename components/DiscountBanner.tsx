@@ -1,8 +1,4 @@
-"use client";
-
-import { getAllSales } from "@/actions/sale-action";
 import { SaleType } from "@/types/schema";
-import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -15,21 +11,16 @@ import {
   CarouselPrevious,
 } from "./ui/carousel";
 
-export default function DiscountBanner() {
-  const { data, isLoading } = useQuery({
-    queryKey: ["sales"],
-    queryFn: getAllSales,
-    staleTime: Infinity,
-    refetchOnWindowFocus: false,
-  });
+type Props = {
+  sales: SaleType[];
+};
 
-  if (isLoading) return <p>Loading...</p>;
-
+export default function DiscountBanner({ sales }: Props) {
   return (
     <Carousel className="w-full max-w-screen-xl mx-auto mt-10 mb-5">
       <CarouselContent>
-        {Array.isArray(data?.sales) ? (
-          data.sales.map((sale: SaleType) => (
+        {Array.isArray(sales) ? (
+          sales.map((sale: SaleType) => (
             <CarouselItem key={sale?.id}>
               <Card className="overflow-hidden">
                 <CardContent className="p-0">
@@ -80,9 +71,7 @@ export default function DiscountBanner() {
           ))
         ) : (
           <div className="w-full text-center py-8">
-            <p className="text-red-500">
-              {!data?.sales && "No sales available."}
-            </p>
+            <p className="text-red-500">{!!sales && "No sales available."}</p>
           </div>
         )}
       </CarouselContent>

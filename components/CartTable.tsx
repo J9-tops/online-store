@@ -22,7 +22,7 @@ const CartTable = ({ items, onDeleteProduct, onResetCart }: CartTableProps) => {
       <div className="grid grid-cols-5 md:grid-cols-6 border rounded-tr-lg rounded-tl-lg bg-white p-2.5 text-base font-semibold">
         <h2 className="col-span-2 md:col-span-3">Product</h2>
         <h2>Price</h2>
-        <h2>Quantity</h2>
+        <h2 className="lg:pl-6">Quantity</h2>
         <h2>Total</h2>
       </div>
 
@@ -56,7 +56,11 @@ const CartTable = ({ items, onDeleteProduct, onResetCart }: CartTableProps) => {
               <PriceFormatter amount={product?.price} />
             </div>
 
-            <QuantityButtons product={product} className="text-sm mb-3 mr-5" />
+            <QuantityButtons
+              product={product}
+              itemQuantity={quantity}
+              className="text-sm mb-3 mr-5"
+            />
 
             <div className="flex items-center pl-3">
               <PriceFormatter

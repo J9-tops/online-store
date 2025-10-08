@@ -22,6 +22,7 @@ export default function CartContent() {
   const items = useSelector((state: RootState) => state.cart.items);
   const totalPrice = useSelector(getTotalPrice);
   const subTotalPrice = useSelector(getSubTotalPrice);
+
   const handleResetCart = () => {
     const confirmed = window.confirm("Are you sure to reset your Cart?");
     if (confirmed) {
@@ -34,8 +35,11 @@ export default function CartContent() {
     dispatch(deleteCartProduct(id));
     toast.success("Product removed from cart!");
   };
-  return items.length > 1 ? (
-    <>
+
+  if (items.length === 0) return <EmptyCart />;
+
+  return (
+    <div className="px-6">
       <CartHeader />
       <div className="grid lg:grid-cols-3 md:gap-8">
         <div className="lg:col-span-1">
@@ -59,8 +63,6 @@ export default function CartContent() {
           totalPrice={totalPrice}
         />
       </div>
-    </>
-  ) : (
-    <EmptyCart />
+    </div>
   );
 }

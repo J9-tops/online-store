@@ -15,7 +15,7 @@ export default async function Page() {
   if (!session) return <NoAccessToCart />;
 
   return (
-    <div className="bg-gray-50 pb-10">
+    <div className="bg-white pb-10">
       <Suspense fallback={<Loader />}>
         <CartContent />
       </Suspense>

@@ -86,6 +86,33 @@ export async function getAllProducts() {
   }
 }
 
+export async function getAllCategoryProducts(slug: string) {
+  try {
+    const category = await prisma.category.findUnique({
+      where: {
+        slug,
+      },
+      include: {
+        products: {
+          include: {
+            categories: true,
+          },
+        },
+      },
+    });
+    console.log(category);
+    const products = category?.products;
+
+    return {
+      success: true,
+      products,
+    };
+  } catch (err) {
+    console.log(err);
+    return { error: "Internal Server Error" };
+  }
+}
+
 export async function getProducts() {
   try {
     const products = await prisma.product.findMany({
@@ -195,17 +222,15 @@ export async function updateProduct(data: ProductType) {
       .replace(/[^a-z0-9\s]/g, "")
       .replace(/\s+/g, "-");
 
-    // Disconnect all existing categories first
     await prisma.product.update({
       where: { id: data.id },
       data: {
         categories: {
-          set: [], // This disconnects all categories
+          set: [],
         },
       },
     });
 
-    // Now update the product with new data and categories
     const updatedProduct = await prisma.product.update({
       where: {
         id: data.id,

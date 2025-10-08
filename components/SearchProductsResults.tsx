@@ -1,24 +1,17 @@
 "use client";
 
-import { getAllProducts } from "@/actions/product-actions";
-import { useQuery } from "@tanstack/react-query";
+import { ProductType } from "@/types/schema";
 import { AnimatePresence, motion } from "framer-motion";
 import ProductCard from "./ProductCard";
-import { ProductGridSkeleton } from "./ProductCardSkeleton";
 
-const ProductGrid = () => {
-  const { data, isLoading } = useQuery({
-    queryKey: ["products"],
-    queryFn: getAllProducts,
-    staleTime: Infinity,
-    refetchOnWindowFocus: false,
-  });
+type Props = {
+  product: ProductType[];
+};
 
-  if (isLoading) return <ProductGridSkeleton />;
-
+const SearchProductResults = ({ product }: Props) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-      {data?.products?.map((product) => (
+      {product?.map((product) => (
         <AnimatePresence key={product?.id}>
           <motion.div
             layout
@@ -40,4 +33,4 @@ const ProductGrid = () => {
   );
 };
 
-export default ProductGrid;
+export default SearchProductResults;
