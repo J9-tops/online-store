@@ -1,3 +1,5 @@
+import { getAllCategories } from "@/actions/category-actions";
+import { getAllProducts } from "@/actions/product-actions";
 import {
   ArrowRight,
   Clock,
@@ -10,7 +12,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-const Page = () => {
+const Page = async () => {
   const stats = {
     totalProducts: 45,
     totalOrders: 128,
@@ -66,6 +68,11 @@ const Page = () => {
       color: "bg-orange-500",
     },
   ];
+  const { products } = await getAllProducts();
+  const totalProducts = products?.length;
+
+  const { categories } = await getAllCategories();
+  const totalCategories = categories?.length;
 
   return (
     <div className="h-screen bg-gray-50 p-6 !overflow-y-auto custom-scrollbar">
@@ -88,7 +95,7 @@ const Page = () => {
                   Total Products
                 </p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {stats.totalProducts}
+                  {totalProducts}
                 </p>
               </div>
               <div className="p-3 bg-blue-100 rounded-full">
@@ -132,7 +139,7 @@ const Page = () => {
               <div>
                 <p className="text-sm font-medium text-gray-600">Categories</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {stats.totalCategories}
+                  {totalCategories}
                 </p>
               </div>
               <div className="p-3 bg-orange-100 rounded-full">

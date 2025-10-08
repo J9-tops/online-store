@@ -100,7 +100,7 @@ export async function getAllCategoryProducts(slug: string) {
         },
       },
     });
-    console.log(category);
+
     const products = category?.products;
 
     return {
