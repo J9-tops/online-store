@@ -1,17 +1,13 @@
 import { sendEmailAction } from "@/actions/send-email";
 import { hashPassword, verifyPassword } from "@/lib/argon2";
 import { ac, roles } from "@/lib/permission";
-import prisma from "@/lib/prisma";
 import { UserRole } from "@prisma/client";
 import { betterAuth, BetterAuthOptions } from "better-auth";
-import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 import { admin, customSession } from "better-auth/plugins";
 
 const options = {
-  database: prismaAdapter(prisma, {
-    provider: "postgresql",
-  }),
+  database: false,
   emailAndPassword: {
     enabled: true,
     minPasswordLength: 6,

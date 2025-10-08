@@ -11,7 +11,7 @@ export default function Category() {
     refetchOnWindowFocus: false,
   });
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <p> </p>;
 
   if (data?.error) {
     return <p>Error: {data.error}</p>;

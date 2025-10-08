@@ -81,41 +81,6 @@ model User {
   banReason     String?
   banExpires    DateTime?
 
-  accounts Account[]
-
   @@map("users")
 }
 
-
-model Account {
-  id        String   @id @default(cuid())
-  createdAt DateTime
-  updatedAt DateTime
-
-  accountId             String
-  providerId            String
-  accessToken           String?
-  refreshToken          String?
-  idToken               String?
-  accessTokenExpiresAt  DateTime?
-  refreshTokenExpiresAt DateTime?
-  scope                 String?
-  password              String?
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("accounts")
-}
-
-model Verification {
-  id        String    @id @default(cuid())
-  createdAt DateTime?
-  updatedAt DateTime?
-
-  identifier String
-  value      String
-  expiresAt  DateTime
-
-  @@map("verifications")
-}

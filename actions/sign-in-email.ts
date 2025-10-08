@@ -33,7 +33,7 @@ export async function signInEmailAction(formData: FormData) {
           return { error: err.message };
       }
     }
-
+    console.log(err);
     return { error: "Internal Server Error" };
   }
 }
