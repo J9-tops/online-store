@@ -15,7 +15,7 @@
     "generate": "pnpm prisma generate",
     "studio": "pnpm prisma studio",
     "db:wipe": "ts-node ./utils/truncate-table.ts",
-    "ping:db": "ts-node ping.ts"
+    "ping:db": "node ping.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
