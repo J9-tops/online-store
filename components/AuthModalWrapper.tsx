@@ -5,6 +5,7 @@ import { SignupForm } from "@/components/SignupForm";
 import { closeModal } from "@/redux/features/modals";
 import { RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
+import { ForgotPasswordForm } from "./ForgotPassword";
 
 export function AuthModalWrapper() {
   const dispatch = useDispatch();
@@ -29,7 +30,13 @@ export function AuthModalWrapper() {
         className="bg-background rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto relative"
         onClick={handleModalContentClick}
       >
-        {mode === "login" ? <LoginForm /> : <SignupForm />}
+        {mode === "login" ? (
+          <LoginForm />
+        ) : mode === "forgot-password" ? (
+          <ForgotPasswordForm />
+        ) : (
+          <SignupForm />
+        )}
       </div>
     </div>
   );

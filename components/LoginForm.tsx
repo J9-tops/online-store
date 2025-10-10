@@ -26,9 +26,11 @@ export function LoginForm({
 }: React.ComponentPropsWithoutRef<"div">) {
   const dispatch = useDispatch();
   const handleSwitchMode = () => {
-    dispatch(switchMode());
+    dispatch(switchMode("signup"));
   };
-
+  const switchToForgotPassword = () => {
+    dispatch(switchMode("forgot-password"));
+  };
   const router = useRouter();
 
   async function handleSocialSignup() {
@@ -108,12 +110,13 @@ export function LoginForm({
                 <div className="grid gap-2">
                   <div className="flex items-center">
                     <Label htmlFor="password">Password</Label>
-                    <a
-                      href="#"
+                    <Button
+                      variant="ghost"
+                      onClick={switchToForgotPassword}
                       className="ml-auto text-sm underline-offset-4 hover:underline"
                     >
                       Forgot your password?
-                    </a>
+                    </Button>
                   </div>
                   <Input
                     id="password"

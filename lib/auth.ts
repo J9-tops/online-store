@@ -3,11 +3,16 @@ import { hashPassword, verifyPassword } from "@/lib/argon2";
 import { ac, roles } from "@/lib/permission";
 import { UserRole } from "@prisma/client";
 import { betterAuth, BetterAuthOptions } from "better-auth";
+import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 import { admin, customSession } from "better-auth/plugins";
+import prisma from "./prisma";
 
 const options = {
-  database: false,
+  database: prismaAdapter(prisma, {
+    provider: "postgresql",
+  }),
+
   emailAndPassword: {
     enabled: true,
     minPasswordLength: 6,
@@ -16,12 +21,13 @@ const options = {
       verify: verifyPassword,
     },
     sendResetPassword: async ({ user, url }) => {
+      const token = url.split("/").pop()?.split("?")[0];
       await sendEmailAction({
         to: user.email,
         subject: "Reset your password",
         meta: {
-          description: "Please click the link below to reset your password.",
-          link: String(url),
+          description: "Use this token to reset your password.",
+          link: String(token),
         },
       });
     },

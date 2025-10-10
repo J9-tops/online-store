@@ -24,7 +24,7 @@ export function SignupForm({
 }: React.ComponentPropsWithoutRef<"div">) {
   const dispatch = useDispatch();
   const handleSwitchMode = () => {
-    dispatch(switchMode());
+    dispatch(switchMode("login"));
   };
 
   async function handleSocialSignup() {

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AuthModalState {
   isOpen: boolean;
-  mode: "login" | "signup";
+  mode: "login" | "signup" | "forgot-password";
 }
 
 interface RootState {
@@ -18,15 +18,21 @@ const authModalSlice = createSlice({
   name: "authModal",
   initialState,
   reducers: {
-    openModal: (state, action: PayloadAction<"login" | "signup">) => {
+    openModal: (
+      state,
+      action: PayloadAction<"login" | "signup" | "forgot-password">
+    ) => {
       state.isOpen = true;
       state.mode = action.payload;
     },
     closeModal: (state) => {
       state.isOpen = false;
     },
-    switchMode: (state) => {
-      state.mode = state.mode === "login" ? "signup" : "login";
+    switchMode: (
+      state,
+      action: PayloadAction<"login" | "signup" | "forgot-password">
+    ) => {
+      state.mode = action.payload;
     },
   },
 });

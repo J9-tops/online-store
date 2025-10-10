@@ -23,14 +23,19 @@ export async function sendEmailAction({
   };
 }) {
   const mailOptions = {
-    from: process.env.NODEMAILER_USER,
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+    from: process.env.EMAIL_USER,
     to,
     subject: `BetterAuthy - ${subject}`,
     html: `
     <div style="${styles.container}">
       <h1 style="${styles.heading}">${subject}</h1>
       <p style="${styles.paragraph}">${meta.description}</p>
-      <a href="${meta.link}" style="${styles.link}">Click Here</a>
+      <p  style="${styles.link}">${meta.link}</p>
     </div>
     `,
   };
