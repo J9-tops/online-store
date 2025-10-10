@@ -12,7 +12,6 @@ const options = {
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
-
   emailAndPassword: {
     enabled: true,
     minPasswordLength: 6,

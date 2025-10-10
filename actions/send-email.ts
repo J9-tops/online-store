@@ -30,7 +30,7 @@ export async function sendEmailAction({
     },
     from: process.env.EMAIL_USER,
     to,
-    subject: `BetterAuthy - ${subject}`,
+    subject: `${subject}`,
     html: `
     <div style="${styles.container}">
       <h1 style="${styles.heading}">${subject}</h1>
