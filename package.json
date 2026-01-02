@@ -49,7 +49,7 @@
     "framer-motion": "^12.23.12",
     "json-server": "1.0.0-beta.3",
     "lucide-react": "^0.475.0",
-    "next": "15.1.6",
+    "next": "15.1.11",
     "node-fetch": "^3.3.2",
     "nodemailer": "^7.0.6",
     "react": "^19.0.0",
