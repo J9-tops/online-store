@@ -209,6 +209,7 @@ export default function FormWrapper() {
               alt="uploaded image"
               width={500}
               height={200}
+              unoptimized
               onLoad={() => setStatus("idle")}
               className="w-full object-contain"
             />

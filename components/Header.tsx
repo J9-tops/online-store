@@ -31,6 +31,7 @@ const Header = async () => {
                 alt="online store logo"
                 className="w-20"
                 priority
+                unoptimized
               />
             </Link>
           </div>

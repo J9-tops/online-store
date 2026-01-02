@@ -45,6 +45,7 @@ const CartTable = ({ items, onDeleteProduct, onResetCart }: CartTableProps) => {
                     width={300}
                     height={300}
                     loading="lazy"
+                    unoptimized
                     className="w-10 h-10 md:w-full md:h-14 object-cover group-hover:scale-105 overflow-hidden transition-transform duration-500"
                   />
                 </div>

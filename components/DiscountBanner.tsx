@@ -60,6 +60,7 @@ export default function DiscountBanner({ sales }: Props) {
                           width={500}
                           height={500}
                           priority
+                          unoptimized
                           className="h-full object-cover transition-transform duration-300 ease-in-out hover:scale-105"
                         />
                       </div>

@@ -10,6 +10,7 @@ const Loader = () => {
         <Image
           src={loaderImage}
           alt="loaderImage"
+          unoptimized
           className="w-14 h-14 object-cover"
         />
       </div>

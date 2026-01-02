@@ -17,6 +17,7 @@ export default function ProductCard({ product }: Props) {
           src={product.imageUrl}
           width={40}
           height={40}
+          unoptimized
         />
       </div>
       <div className="w-full flex justify-between items-center">

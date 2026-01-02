@@ -25,6 +25,7 @@ const EmptyCart = () => {
           alt="Empty shopping bag"
           width={200}
           height={200}
+          unoptimized
           className="mx-auto rounded-lg shadow-md"
         />
         <h2 className="text-3xl font-bold text-gray-800">

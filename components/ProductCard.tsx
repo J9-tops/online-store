@@ -18,6 +18,7 @@ const ProductCard = ({ product }: { product: ProductType }) => {
               width={500}
               height={500}
               loading="lazy"
+              unoptimized
               className={`w-full h-[191px] object-contain overflow-hidden  transition-transform duration-500 ${
                 product?.stock !== 0 && "group-hover:scale-105"
               }`}

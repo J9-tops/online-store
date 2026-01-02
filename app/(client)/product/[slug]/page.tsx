@@ -34,6 +34,7 @@ const ProductPage = async ({
               width={700}
               height={700}
               priority
+              unoptimized
               className="w-full max-h-[550px] object-cover group-hover:scale-110 hoverEffect rounded-md"
             />
           </div>

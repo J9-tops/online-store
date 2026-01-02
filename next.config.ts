@@ -1,16 +1,16 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   experimental: {
     middlewarePrefetch: "strict",
   },
   images: {
     remotePatterns: [
-      {
-        protocol: "http",
-        hostname: "res.cloudinary.com",
-      },
+      { protocol: "http", hostname: "res.cloudinary.com" },
+      { protocol: "https", hostname: "res.cloudinary.com" },
+      { protocol: "https", hostname: "pngimg.com" },
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "img.pikbest.com" },
     ],
   },
   env: {

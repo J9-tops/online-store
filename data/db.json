@@ -52,7 +52,318 @@
     }
   ],
   "verification": [],
-  "product": [],
-  "category": [],
-  "sale": []
+  "product": [
+    {
+      "title": "Sonic Noise-Cancelling Headphones",
+      "slug": "sonic-headphones",
+      "imageUrl": "https://pngimg.com/uploads/headphones/headphones_PNG7655.png",
+      "description": "Immersive sound with 40-hour battery life.",
+      "label": "Premium",
+      "price": 299.99,
+      "stock": 25,
+      "status": "Hot",
+      "categories": [
+        {
+          "title": "Electronics",
+          "slug": "electronics",
+          "description": "Cutting-edge tech and gadgets.",
+          "id": "6h77db9m8miwsxxfxun8",
+          "createdAt": "2026-01-02T15:05:33.949Z",
+          "updatedAt": "2026-01-02T15:05:33.949Z"
+        }
+      ],
+      "id": "kfmc0owpm8k3j2i0v7ypuc",
+      "createdAt": "2026-01-02T15:05:33.953Z",
+      "updatedAt": "2026-01-02T15:05:33.953Z"
+    },
+    {
+      "title": "Minimalist Leather Watch",
+      "slug": "minimalist-watch",
+      "imageUrl": "https://pngimg.com/uploads/watches/watches_PNG101444.png",
+      "description": "Genuine leather strap with a sapphire crystal face.",
+      "label": "Trending",
+      "price": 150,
+      "stock": 10,
+      "status": "New",
+      "categories": [
+        {
+          "title": "Apparel",
+          "slug": "apparel",
+          "description": "Stylish clothing for all seasons.",
+          "id": "3k9dnljabmfcyjyb5y5res",
+          "createdAt": "2026-01-02T15:05:33.950Z",
+          "updatedAt": "2026-01-02T15:05:33.950Z"
+        }
+      ],
+      "id": "jwsfyg6bgzi4b240x9vej",
+      "createdAt": "2026-01-02T15:05:33.954Z",
+      "updatedAt": "2026-01-02T15:05:33.954Z"
+    },
+    {
+      "title": "Ergonomic Office Chair",
+      "slug": "ergonomic-chair",
+      "imageUrl": "https://pngimg.com/uploads/chair/chair_PNG6901.png",
+      "description": "Breathable mesh back with lumbar support.",
+      "label": "Office Must-Have",
+      "price": 450,
+      "stock": 5,
+      "status": null,
+      "categories": [
+        {
+          "title": "Home & Living",
+          "slug": "home-living",
+          "description": "Furniture and home decor.",
+          "id": "gnn8rbm2qxoksooiq0pew",
+          "createdAt": "2026-01-02T15:05:33.951Z",
+          "updatedAt": "2026-01-02T15:05:33.951Z"
+        }
+      ],
+      "id": "ohqv01bmy2qjpji2j5ird",
+      "createdAt": "2026-01-02T15:05:33.954Z",
+      "updatedAt": "2026-01-02T15:05:33.954Z"
+    },
+    {
+      "title": "Yoga Starter Kit",
+      "slug": "yoga-kit",
+      "imageUrl": "https://pngimg.com/uploads/fitness/fitness_PNG208.png",
+      "description": "Includes a non-slip mat, two blocks, and a strap.",
+      "label": "Sale",
+      "price": 45,
+      "stock": 100,
+      "status": "Sale",
+      "categories": [
+        {
+          "title": "Fitness",
+          "slug": "fitness",
+          "description": "Gym gear and health supplements.",
+          "id": "sik2dv295ejvvbf7nqt1v",
+          "createdAt": "2026-01-02T15:05:33.951Z",
+          "updatedAt": "2026-01-02T15:05:33.951Z"
+        }
+      ],
+      "id": "kiazwkcci66pzdbc3hfks",
+      "createdAt": "2026-01-02T15:05:33.955Z",
+      "updatedAt": "2026-01-02T15:05:33.955Z"
+    },
+    {
+      "title": "The Art of Clean Code",
+      "slug": "clean-code-book",
+      "imageUrl": "https://pngimg.com/uploads/book/book_PNG51115.png",
+      "description": "A comprehensive guide to writing maintainable software.",
+      "label": "Best Seller",
+      "price": 35.99,
+      "stock": 200,
+      "status": "Hot",
+      "categories": [
+        {
+          "title": "Books",
+          "slug": "books",
+          "description": "Physical and digital reading material.",
+          "id": "lsr68l5l0bvmjer66p0hq",
+          "createdAt": "2026-01-02T15:05:33.952Z",
+          "updatedAt": "2026-01-02T15:05:33.952Z"
+        }
+      ],
+      "id": "iu8183ee29qhogdoxtbwuu",
+      "createdAt": "2026-01-02T15:05:33.955Z",
+      "updatedAt": "2026-01-02T15:05:33.955Z"
+    },
+    {
+      "title": "Smart RGB Desk Lamp",
+      "slug": "smart-lamp",
+      "imageUrl": "https://pngimg.com/uploads/lamp/lamp_PNG108700.png",
+      "description": "App-controlled lighting with 16 million colors.",
+      "label": "New Arrival",
+      "price": 59.99,
+      "stock": 0,
+      "status": "New",
+      "categories": [
+        {
+          "title": "Electronics",
+          "slug": "electronics",
+          "description": "Cutting-edge tech and gadgets.",
+          "id": "6h77db9m8miwsxxfxun8",
+          "createdAt": "2026-01-02T15:05:33.949Z",
+          "updatedAt": "2026-01-02T15:05:33.949Z"
+        },
+        {
+          "title": "Home & Living",
+          "slug": "home-living",
+          "description": "Furniture and home decor.",
+          "id": "gnn8rbm2qxoksooiq0pew",
+          "createdAt": "2026-01-02T15:05:33.951Z",
+          "updatedAt": "2026-01-02T15:05:33.951Z"
+        }
+      ],
+      "id": "oa8j5vsfoamngxa7bijw",
+      "createdAt": "2026-01-02T15:05:33.956Z",
+      "updatedAt": "2026-01-02T15:05:33.956Z"
+    },
+    {
+      "title": "Organic Cotton T-Shirt",
+      "slug": "organic-tshirt",
+      "imageUrl": "https://pngimg.com/uploads/tshirt/tshirt_PNG5450.png",
+      "description": "Eco-friendly, breathable, and soft.",
+      "label": "Eco-Friendly",
+      "price": 25,
+      "stock": 500,
+      "status": null,
+      "categories": [
+        {
+          "title": "Apparel",
+          "slug": "apparel",
+          "description": "Stylish clothing for all seasons.",
+          "id": "3k9dnljabmfcyjyb5y5res",
+          "createdAt": "2026-01-02T15:05:33.950Z",
+          "updatedAt": "2026-01-02T15:05:33.950Z"
+        }
+      ],
+      "id": "whapkuppglp643a7exc1i",
+      "createdAt": "2026-01-02T15:05:33.956Z",
+      "updatedAt": "2026-01-02T15:05:33.956Z"
+    },
+    {
+      "title": "4K Ultra-Wide Monitor",
+      "slug": "4k-monitor",
+      "imageUrl": "https://pngimg.com/uploads/monitor/laptop_PNG5898.png",
+      "description": "34-inch curved display for maximum productivity.",
+      "label": "Flash Sale",
+      "price": 899,
+      "stock": 12,
+      "status": "Sale",
+      "categories": [
+        {
+          "title": "Electronics",
+          "slug": "electronics",
+          "description": "Cutting-edge tech and gadgets.",
+          "id": "6h77db9m8miwsxxfxun8",
+          "createdAt": "2026-01-02T15:05:33.949Z",
+          "updatedAt": "2026-01-02T15:05:33.949Z"
+        }
+      ],
+      "id": "2v6eguvvi3bl4w8gkwngaa",
+      "createdAt": "2026-01-02T15:05:33.957Z",
+      "updatedAt": "2026-01-02T15:05:33.957Z"
+    },
+    {
+      "title": "Cast Iron Skillet",
+      "slug": "cast-iron-skillet",
+      "imageUrl": "https://pngimg.com/uploads/frying_pan/frying_pan_PNG8356.png",
+      "description": "Pre-seasoned and ready for high-heat cooking.",
+      "label": "Chef's Choice",
+      "price": 40,
+      "stock": 60,
+      "status": null,
+      "categories": [
+        {
+          "title": "Home & Living",
+          "slug": "home-living",
+          "description": "Furniture and home decor.",
+          "id": "gnn8rbm2qxoksooiq0pew",
+          "createdAt": "2026-01-02T15:05:33.951Z",
+          "updatedAt": "2026-01-02T15:05:33.951Z"
+        }
+      ],
+      "id": "efi6jxxusl7apfvyhqwhxo",
+      "createdAt": "2026-01-02T15:05:33.957Z",
+      "updatedAt": "2026-01-02T15:05:33.957Z"
+    },
+    {
+      "title": "Wireless Gaming Mouse",
+      "slug": "gaming-mouse",
+      "imageUrl": "https://pngimg.com/uploads/computer_mouse/computer_mouse_PNG7700.png",
+      "description": "Ultra-lightweight with 25k DPI sensor.",
+      "label": "New",
+      "price": 129,
+      "stock": 33,
+      "status": "New",
+      "categories": [
+        {
+          "title": "Electronics",
+          "slug": "electronics",
+          "description": "Cutting-edge tech and gadgets.",
+          "id": "6h77db9m8miwsxxfxun8",
+          "createdAt": "2026-01-02T15:05:33.949Z",
+          "updatedAt": "2026-01-02T15:05:33.949Z"
+        }
+      ],
+      "id": "e7gx3butjpmqh6tmcq7m4",
+      "createdAt": "2026-01-02T15:05:33.958Z",
+      "updatedAt": "2026-01-02T15:05:33.958Z"
+    }
+  ],
+  "category": [
+    {
+      "title": "Electronics",
+      "slug": "electronics",
+      "description": "Cutting-edge tech and gadgets.",
+      "id": "6h77db9m8miwsxxfxun8",
+      "createdAt": "2026-01-02T15:05:33.949Z",
+      "updatedAt": "2026-01-02T15:05:33.949Z"
+    },
+    {
+      "title": "Apparel",
+      "slug": "apparel",
+      "description": "Stylish clothing for all seasons.",
+      "id": "3k9dnljabmfcyjyb5y5res",
+      "createdAt": "2026-01-02T15:05:33.950Z",
+      "updatedAt": "2026-01-02T15:05:33.950Z"
+    },
+    {
+      "title": "Home & Living",
+      "slug": "home-living",
+      "description": "Furniture and home decor.",
+      "id": "gnn8rbm2qxoksooiq0pew",
+      "createdAt": "2026-01-02T15:05:33.951Z",
+      "updatedAt": "2026-01-02T15:05:33.951Z"
+    },
+    {
+      "title": "Fitness",
+      "slug": "fitness",
+      "description": "Gym gear and health supplements.",
+      "id": "sik2dv295ejvvbf7nqt1v",
+      "createdAt": "2026-01-02T15:05:33.951Z",
+      "updatedAt": "2026-01-02T15:05:33.951Z"
+    },
+    {
+      "title": "Books",
+      "slug": "books",
+      "description": "Physical and digital reading material.",
+      "id": "lsr68l5l0bvmjer66p0hq",
+      "createdAt": "2026-01-02T15:05:33.952Z",
+      "updatedAt": "2026-01-02T15:05:33.952Z"
+    }
+  ],
+  "sale": [
+    {
+      "title": "New Year Tech Bash",
+      "slug": "new-year-tech",
+      "description": "Start 2026 with the best gear.",
+      "discountBadge": "20% OFF",
+      "discountAmount": 20,
+      "couponCode": "NY2026",
+      "isActive": true,
+      "imageUrl": "https://pngimg.com/uploads/gift/gift_PNG100210.png",
+      "validFrom": "2026-01-01T00:00:00.000Z",
+      "validUntil": "2026-01-31T23:59:59.000Z",
+      "id": "1xxbpda38fyvq7z0zmi2k",
+      "createdAt": "2026-01-02T15:05:33.952Z",
+      "updatedAt": "2026-01-02T15:05:33.952Z"
+    },
+    {
+      "title": "Spring Fitness Clearout",
+      "slug": "spring-fitness",
+      "description": "Get ready for the sun with massive savings.",
+      "discountBadge": "BOGO",
+      "discountAmount": 50,
+      "couponCode": "FITSPRING",
+      "isActive": false,
+      "imageUrl": "https://pngimg.com/uploads/gym_equipment/gym_equipment_PNG13.png",
+      "validFrom": "2026-03-01T00:00:00.000Z",
+      "validUntil": "2026-03-15T23:59:59.000Z",
+      "id": "rxaswq6g4hvsnaptiyqdd",
+      "createdAt": "2026-01-02T15:05:33.953Z",
+      "updatedAt": "2026-01-02T15:05:33.953Z"
+    }
+  ]
 }

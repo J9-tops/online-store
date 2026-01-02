@@ -210,6 +210,7 @@ export default function FormWrapper({ categories = [] }: FormWrapperProps) {
               alt="uploaded image"
               width={500}
               height={200}
+              unoptimized
               onLoad={() => setStatus("idle")}
               className="w-full object-contain"
             />

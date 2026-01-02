@@ -20,6 +20,7 @@ const NoAccessToCart = () => {
               alt="Company logo"
               width={80}
               height={80}
+              unoptimized
               className="mb-4"
             />
           </div>
