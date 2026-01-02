@@ -1,54 +1,43 @@
 {
   "user": [
     {
-      "name": "Jimmy",
-      "email": "j9.tops@gmail.com",
+      "name": "Admin",
+      "email": "admin@gmail.com",
       "emailVerified": false,
-      "createdAt": "2026-01-02T11:28:01.811Z",
-      "updatedAt": "2026-01-02T11:28:01.811Z",
+      "createdAt": "2026-01-02T15:32:51.661Z",
+      "updatedAt": "2026-01-02T15:32:51.661Z",
       "role": "Admin",
-      "id": "5bdvc9szo48krrfjlsu48p"
+      "id": "vo8ds94ettwe3dljerppf"
     },
     {
-      "name": "Jimmy",
-      "email": "maxllmond8@gmail.com",
+      "name": "Vendor",
+      "email": "vendor@gmail.com",
       "emailVerified": false,
-      "createdAt": "2026-01-02T11:29:47.445Z",
-      "updatedAt": "2026-01-02T11:29:47.445Z",
+      "createdAt": "2026-01-02T15:34:41.493Z",
+      "updatedAt": "2026-01-02T15:34:41.493Z",
       "role": "Vendor",
-      "id": "gruez2c3146d5j1f5yvf9"
+      "id": "6r2z6di9zjf63er47rgz5p"
     }
   ],
-  "session": [
-    {
-      "expiresAt": "2026-02-01T11:29:50.707Z",
-      "token": "qwZmq5SzLrGcFuvgP54ZgKpECRXiC4lN",
-      "createdAt": "2026-01-02T11:29:50.708Z",
-      "updatedAt": "2026-01-02T11:29:50.708Z",
-      "ipAddress": "",
-      "userAgent": "",
-      "userId": "gruez2c3146d5j1f5yvf9",
-      "id": "5gy4j69pe2wdcc8pfly2xd"
-    }
-  ],
+  "session": [],
   "account": [
     {
-      "accountId": "5bdvc9szo48krrfjlsu48p",
+      "accountId": "vo8ds94ettwe3dljerppf",
       "providerId": "credential",
-      "userId": "5bdvc9szo48krrfjlsu48p",
-      "password": "$argon2id$v=19$m=19456,t=2,p=1$CPHOLpI3ydEuMy0IZo+pZw$mkg+2CIbcyjBD05cqq9qp5SILZnDrJdjF71jImsD/kM",
-      "createdAt": "2026-01-02T11:28:01.813Z",
-      "updatedAt": "2026-01-02T11:28:01.813Z",
-      "id": "bybedtdxpgvkzmkl4sn7fl"
+      "userId": "vo8ds94ettwe3dljerppf",
+      "password": "$argon2id$v=19$m=19456,t=2,p=1$IxK+qxjwynZVYkrjVwYmOg$kzIVsc3u0LyndOgK8RPDclwyM5DTlKBxpe23g/3m0RM",
+      "createdAt": "2026-01-02T15:32:51.663Z",
+      "updatedAt": "2026-01-02T15:32:51.663Z",
+      "id": "djehxikv4gm3x63vi4ci6x"
     },
     {
-      "accountId": "gruez2c3146d5j1f5yvf9",
+      "accountId": "6r2z6di9zjf63er47rgz5p",
       "providerId": "credential",
-      "userId": "gruez2c3146d5j1f5yvf9",
-      "password": "$argon2id$v=19$m=19456,t=2,p=1$hjtnABS4kUOoUuhk0M7J2Q$JKcObuyEGooYggtFxLzppDMzVGvnkLkYtdF7jyJWHjw",
-      "createdAt": "2026-01-02T11:29:47.447Z",
-      "updatedAt": "2026-01-02T11:29:47.447Z",
-      "id": "irn47rtlfvm8m4rbmlpp"
+      "userId": "6r2z6di9zjf63er47rgz5p",
+      "password": "$argon2id$v=19$m=19456,t=2,p=1$8AmS68mK7pUogUgc7+6nMQ$XKYtgIzSPPY2uZZBQeUn8cTUNoJSGBUNeVVOOFjuFoQ",
+      "createdAt": "2026-01-02T15:34:41.495Z",
+      "updatedAt": "2026-01-02T15:34:41.495Z",
+      "id": "dks5d2olwngkntq1gu34p7"
     }
   ],
   "verification": [],

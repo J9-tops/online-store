@@ -1,5 +1,6 @@
 import { getAllSales } from "@/actions/sale-action";
 import Container from "@/components/Container";
+import DemoCredentials from "@/components/DemoCredentials";
 import DiscountBanner from "@/components/DiscountBanner";
 import ProductList from "@/components/ProductList";
 
@@ -9,6 +10,7 @@ export default async function Home() {
     <Container className="pb-10 overflow-auto">
       <DiscountBanner sales={sales ?? []} />
       <ProductList title={true} />
+      <DemoCredentials />
     </Container>
   );
 }
