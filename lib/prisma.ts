@@ -1,18 +1,19 @@
-import { PrismaClient } from "@prisma/client";
+import { JsonClient } from "./json-db";
 
 const prismaClientSingleton = () => {
-  return new PrismaClient();
+  return new JsonClient();
 };
 
-const prisma = globalThis.prismaGlobal ?? prismaClientSingleton();
+const prisma = globalThis.jsonPrismaGlobal ?? prismaClientSingleton();
 
 if (process.env.NODE_ENV !== "production") {
-  globalThis.prismaGlobal = prisma;
+  globalThis.jsonPrismaGlobal = prisma;
 }
 
-export default prisma;
+// Cast to any to avoid type errors in consumers expecting a real PrismaClient
+export default prisma as any;
 
 declare global {
   // This augments globalThis instead of redeclaring it
-  var prismaGlobal: ReturnType<typeof prismaClientSingleton> | undefined;
+  var jsonPrismaGlobal: ReturnType<typeof prismaClientSingleton> | undefined;
 }

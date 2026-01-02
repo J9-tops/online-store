@@ -1,0 +1,58 @@
+{
+  "user": [
+    {
+      "name": "Jimmy",
+      "email": "j9.tops@gmail.com",
+      "emailVerified": false,
+      "createdAt": "2026-01-02T11:28:01.811Z",
+      "updatedAt": "2026-01-02T11:28:01.811Z",
+      "role": "Admin",
+      "id": "5bdvc9szo48krrfjlsu48p"
+    },
+    {
+      "name": "Jimmy",
+      "email": "maxllmond8@gmail.com",
+      "emailVerified": false,
+      "createdAt": "2026-01-02T11:29:47.445Z",
+      "updatedAt": "2026-01-02T11:29:47.445Z",
+      "role": "Vendor",
+      "id": "gruez2c3146d5j1f5yvf9"
+    }
+  ],
+  "session": [
+    {
+      "expiresAt": "2026-02-01T11:29:50.707Z",
+      "token": "qwZmq5SzLrGcFuvgP54ZgKpECRXiC4lN",
+      "createdAt": "2026-01-02T11:29:50.708Z",
+      "updatedAt": "2026-01-02T11:29:50.708Z",
+      "ipAddress": "",
+      "userAgent": "",
+      "userId": "gruez2c3146d5j1f5yvf9",
+      "id": "5gy4j69pe2wdcc8pfly2xd"
+    }
+  ],
+  "account": [
+    {
+      "accountId": "5bdvc9szo48krrfjlsu48p",
+      "providerId": "credential",
+      "userId": "5bdvc9szo48krrfjlsu48p",
+      "password": "$argon2id$v=19$m=19456,t=2,p=1$CPHOLpI3ydEuMy0IZo+pZw$mkg+2CIbcyjBD05cqq9qp5SILZnDrJdjF71jImsD/kM",
+      "createdAt": "2026-01-02T11:28:01.813Z",
+      "updatedAt": "2026-01-02T11:28:01.813Z",
+      "id": "bybedtdxpgvkzmkl4sn7fl"
+    },
+    {
+      "accountId": "gruez2c3146d5j1f5yvf9",
+      "providerId": "credential",
+      "userId": "gruez2c3146d5j1f5yvf9",
+      "password": "$argon2id$v=19$m=19456,t=2,p=1$hjtnABS4kUOoUuhk0M7J2Q$JKcObuyEGooYggtFxLzppDMzVGvnkLkYtdF7jyJWHjw",
+      "createdAt": "2026-01-02T11:29:47.447Z",
+      "updatedAt": "2026-01-02T11:29:47.447Z",
+      "id": "irn47rtlfvm8m4rbmlpp"
+    }
+  ],
+  "verification": [],
+  "product": [],
+  "category": [],
+  "sale": []
+}

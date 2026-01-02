@@ -1,0 +1,33 @@
+{
+  "Category": {
+    "id": "string (optional)",
+    "title": "string",
+    "slug": "string",
+    "description": "string"
+  },
+  "Sale": {
+    "id": "string (optional)",
+    "title": "string",
+    "slug": "string (optional)",
+    "description": "string",
+    "discountBadge": "string",
+    "discountAmount": "number",
+    "couponCode": "string",
+    "validFrom": "string (ISO Date)",
+    "validUntil": "string (ISO Date)",
+    "isActive": "boolean (default: true)",
+    "imageUrl": "string"
+  },
+  "Product": {
+    "id": "string (optional)",
+    "title": "string",
+    "slug": "string",
+    "imageUrl": "string",
+    "description": "string",
+    "label": "string",
+    "price": "number",
+    "stock": "number",
+    "status": "string (enum: 'Hot' | 'New' | 'Sale' | null)",
+    "categories": "Category[]"
+  }
+}
