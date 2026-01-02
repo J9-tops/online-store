@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { JsonClient } from "./json-db";
 
 const prismaClientSingleton = () => {
