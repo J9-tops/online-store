@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "db:push": "pnpm prisma db push",
@@ -18,7 +18,8 @@
     "db:reset": "echo '{ \"user\": [], \"session\": [], \"account\": [], \"verification\": [], \"product\": [], \"category\": [], \"sale\": [] }' > data/db.json",
     "db:seed": "npx tsx scripts/seed.ts",
     "ping:db": "node ping.js",
-    "session:cleanup": "node sessionCleanup.js"
+    "session:cleanup": "node sessionCleanup.js",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
